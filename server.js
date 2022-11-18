@@ -6,6 +6,7 @@
  * For more information, read
  * https://developer.spotify.com/web-api/authorization-guide/#client_credentials_flow
  */
+ require('dotenv').config();
 
  var request = require('request'); // "Request" library
  var express = require('express');
@@ -13,8 +14,8 @@
 var { graphqlHTTP } = require('express-graphql');
 const graphql = require('graphql')
 
- var client_id = ''; // Your client id
- var client_secret = ''; // Your secret
+ var client_id = 'c125d728642049e6ac238098f7560681'; // Your client id
+ var client_secret = process.env.CLIENT_SECRET; // Your secret
  
  var api_url = 'https://api.spotify.com/v1/';
  
