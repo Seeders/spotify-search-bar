@@ -50,8 +50,6 @@ const graphql = require('graphql')
    });
  } );
  
- 
- 
  var doSearch = function( token, query ) {
  
    var options = {
