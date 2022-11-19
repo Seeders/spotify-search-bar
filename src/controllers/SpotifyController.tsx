@@ -64,8 +64,9 @@ export interface SpotifyAPIResult {
 
 export default class SpotifyController {
 
-    public query( query:string ) {      
-        return fetch( `/query?q=${query}` )
+    public query( query:string, type: string, pageNum: number = 0 ) {      
+        let limit = 10;
+        return fetch( `/query?q=${query}&type=${type}&limit=${limit}&offset=${pageNum * limit}` )
             .then( ( response ) => response.json() )
             .then( ( response ) => {                      
                 return response;

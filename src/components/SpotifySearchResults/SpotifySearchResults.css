@@ -1,4 +1,7 @@
 
-.spotify-search-bar {
-    
+.search-result-section--flex-container {
+    display: flex;
+    flex-wrap: wrap;
+    width: calc(640px + (5 * 1em));
+    margin: 0 auto;
 }

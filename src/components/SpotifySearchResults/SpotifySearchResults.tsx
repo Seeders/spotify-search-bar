@@ -2,6 +2,8 @@ import * as React from "react";
 import SpotifySearchResultSection from "../SpotifySearchResultSection/SpotifySearchResultSection";
 import { SpotifyAPIResult, SpotifyAPIArtist, SpotifyAPIAlbum, SpotifyAPITrack } from "../../controllers/SpotifyController";
 import { SpotifyResult } from "../SpotifySearchResult/SpotifySearchResult";
+import getClassName from "../../utils/GetClassName";
+import SpotifyController from "../../controllers/SpotifyController";
 
 require("./SpotifySearchResults.css");
 
@@ -10,64 +12,89 @@ require("./SpotifySearchResults.css");
 interface SpotifySearchResultsProps {
   className?: string;
   children?: React.ReactNode;
-  results: SpotifyAPIResult;
+  query: string;
+  results?: SpotifyAPIResult;
 }
+
 interface SpotifySearchResultsState {
+    results?: SpotifyAPIResult;
 }
+
 export default class SpotifySearchResults extends React.Component<SpotifySearchResultsProps, SpotifySearchResultsState> {
+    mainClass : string = "search-results";
 
     constructor( props: SpotifySearchResultsProps ) {
         super(props); 
-    
         this.state = {
-            results: undefined
+            results: this.props.results
         };
     
     }
 
-    getClassName() {
-        return "spotify-search-results " + this.props.className;
+    componentDidUpdate( prevProps : SpotifySearchResultsProps ) {
+        if (prevProps.results !== this.props.results ) {
+            this.setState( { results: this.props.results } );
+        }
     }
 
-    render() {
+
+    render() {       
 
         let artists, albums, tracks: Array<SpotifyResult> = [];
-        if( this.props.results ) {
-            if( this.props.results.artists.items ) {
-                artists = this.props.results.artists.items.map( (item:SpotifyAPIArtist) => {
-                    return {
-                        id: item.id,
-                        name: item.name,
-                        image: item.images.length ? item.images[0].url : ""
-                    }
-                });
-            }
-            if( this.props.results.albums.items ) {
-                albums = this.props.results.albums.items.map( (item:SpotifyAPIAlbum) => {
-                    return {
-                        id: item.id,
-                        name: item.name,
-                        image: item.images.length ? item.images[0].url : ""
-                    }
-                });
-            }
-            if( this.props.results.tracks.items ) {
-                tracks = this.props.results.tracks.items.map( (item:SpotifyAPITrack) => {
-                    return {
-                        id: item.id,
-                        name: item.name,
-                        image: item.album.images.length ? item.album.images[0].url : ""
-                    }
-                });
-            }
+        if( this.state.results ) {
+            artists = this.mapArtists(this.state.results);
+            albums = this.mapAlbums(this.state.results);
+            tracks = this.mapTracks(this.state.results);        
         }
         return (
-            <div className={this.getClassName()}>
-                <SpotifySearchResultSection name="Artists" results={artists} />
-                <SpotifySearchResultSection name="Albums" results={albums} />
-                <SpotifySearchResultSection name="Tracks" results={tracks} />
+            <div className={getClassName(this.mainClass, this.props.className)}>
+                <SpotifySearchResultSection name="Artists" type="artist" query={this.props.query} results={artists} mapFunction={this.mapArtists} className="search-result-section--artists" />
+                <SpotifySearchResultSection name="Albums" type="album" query={this.props.query} results={albums} mapFunction={this.mapAlbums} className="search-result-section--albums" />
+                <SpotifySearchResultSection name="Tracks" type="track" query={this.props.query} results={tracks} mapFunction={this.mapTracks} className="search-result-section--tracks" />
             </div>
         );
+    }
+
+    mapArtists( results: SpotifyAPIResult ) : Array<SpotifyResult> {
+        if( results && results.artists && results.artists.items ) {
+            return results.artists.items.map( (item:SpotifyAPIArtist) => {
+                return {
+                    id: item.id,
+                    name: item.name,
+                    image: item.images.length ? item.images[0].url : ""
+                }
+            });
+        } 
+
+        return [];
+    }
+
+    mapAlbums( results: SpotifyAPIResult ) : Array<SpotifyResult> {
+        if( results && results.albums && results.albums.items ) {
+            return results.albums.items.map( (item:SpotifyAPIAlbum) => {
+                return {
+                    id: item.id,
+                    name: item.name,
+                    image: item.images.length ? item.images[0].url : ""
+                }
+            });
+        } 
+
+        return [];
+    }
+
+    mapTracks( results: SpotifyAPIResult ) : Array<SpotifyResult> {
+        if( results && results.tracks && results.tracks.items ) {
+            return results.tracks.items.map( (item:SpotifyAPITrack) => {
+                return {
+                    id: item.id,
+                    name: item.name,
+                    image: item.album.images.length ? item.album.images[0].url : ""
+                }
+            });
+        } 
+
+        return [];
     }
 
 }

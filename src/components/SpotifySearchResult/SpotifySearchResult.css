@@ -1,4 +1,9 @@
 
-.spotify-search-result {
-    
+.spotify_search-result {
+    width: 128px;
+    margin: 0 1em 0 0;
+}
+
+.spotify_search-result img {
+    height: 128px;
 }

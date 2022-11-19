@@ -50,10 +50,10 @@ const graphql = require('graphql')
    });
  } );
  
- var doSearch = function( token, query ) {
- 
+ var doSearch = function( token, query, type, limit, offset ) {    
+
    var options = {
-     url: getEndpoint('search', `q=${query}&type=track,artist,album&limit=10`),
+     url: getEndpoint('search', `q=${query}&type=${type}&limit=${limit}&offset=${offset}`),
      headers: {
        'Authorization': 'Bearer ' + token
      },
@@ -74,11 +74,8 @@ const graphql = require('graphql')
  
  
  app.use('/query', (req, res) => {
-   console.log( req.query.q );
    getAccessToken.then( ( token ) => {    
-     console.log( token );
-     doSearch( token, req.query.q).then( ( body ) => {
-       console.log( body );  
+     doSearch( token, req.query.q, req.query.type, req.query.limit, req.query.offset).then( ( body ) => {  
        res.send( body );
      });
  

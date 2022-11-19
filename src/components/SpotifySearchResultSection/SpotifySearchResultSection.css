@@ -1,4 +1,17 @@
+.spotify_search-result-section {
+    position: relative;
+    width: 960px;
+    margin: 0 auto;
+}
 
-.spotify-search-result-section {
-    
+.spotify_search-result-section--next {
+    position: absolute;
+    right: 0;
+    top: 256px;
+}
+
+.spotify_search-result-section--previous {
+    position: absolute;
+    left: 0;
+    top: 256px;
 }
