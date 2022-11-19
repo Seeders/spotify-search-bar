@@ -73,11 +73,13 @@ const graphql = require('graphql')
  
  
  
- app.use('/query', (req) => {
+ app.use('/query', (req, res) => {
+   console.log( req.query.q );
    getAccessToken.then( ( token ) => {    
      console.log( token );
-     doSearch( token, 'Nirvana').then( ( body ) => {
+     doSearch( token, req.query.q).then( ( body ) => {
        console.log( body );  
+       res.send( body );
      });
  
    });
