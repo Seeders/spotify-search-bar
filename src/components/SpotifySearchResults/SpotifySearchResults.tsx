@@ -48,9 +48,9 @@ export default class SpotifySearchResults extends React.Component<SpotifySearchR
         }
         return (
             <div className={getClassName(this.mainClass, this.props.className)}>
-                <SpotifySearchResultSection name="Artists" type="artist" query={this.props.query} results={artists} mapFunction={this.mapArtists} className="search-result-section--artists" />
-                <SpotifySearchResultSection name="Albums" type="album" query={this.props.query} results={albums} mapFunction={this.mapAlbums} className="search-result-section--albums" />
-                <SpotifySearchResultSection name="Tracks" type="track" query={this.props.query} results={tracks} mapFunction={this.mapTracks} className="search-result-section--tracks" />
+                <SpotifySearchResultSection name="Artists" type="artist" query={this.props.query} results={artists} mapFunction={this.mapArtists} onClick={this.selectArtist} className="search-result-section--artists" />
+                <SpotifySearchResultSection name="Albums" type="album" query={this.props.query} results={albums} mapFunction={this.mapAlbums} onClick={this.selectAlbum} className="search-result-section--albums" />
+                <SpotifySearchResultSection name="Tracks" type="track" query={this.props.query} results={tracks} mapFunction={this.mapTracks} onClick={this.selectTrack} className="search-result-section--tracks" />
             </div>
         );
     }
@@ -61,7 +61,8 @@ export default class SpotifySearchResults extends React.Component<SpotifySearchR
                 return {
                     id: item.id,
                     name: item.name,
-                    image: item.images.length ? item.images[0].url : ""
+                    image: item.images.length ? item.images[0].url : "",
+                    type: "artist"
                 }
             });
         } 
@@ -75,7 +76,8 @@ export default class SpotifySearchResults extends React.Component<SpotifySearchR
                 return {
                     id: item.id,
                     name: item.name,
-                    image: item.images.length ? item.images[0].url : ""
+                    image: item.images.length ? item.images[0].url : "",
+                    type: "album"
                 }
             });
         } 
@@ -89,7 +91,8 @@ export default class SpotifySearchResults extends React.Component<SpotifySearchR
                 return {
                     id: item.id,
                     name: item.name,
-                    image: item.album.images.length ? item.album.images[0].url : ""
+                    image: item.album.images.length ? item.album.images[0].url : "",
+                    type: "track"
                 }
             });
         } 
@@ -97,4 +100,16 @@ export default class SpotifySearchResults extends React.Component<SpotifySearchR
         return [];
     }
 
+    selectArtist( result: SpotifyResult ) {
+        console.log( "selectArtist", result );
+    }
+
+    selectAlbum( result: SpotifyResult ) {
+        console.log( "selectAlbum", result );
+
+    }
+
+    selectTrack( result: SpotifyResult ) {
+        console.log( "selectTrack", result );
+    }
 }

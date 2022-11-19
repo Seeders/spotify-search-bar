@@ -14,6 +14,7 @@ interface SpotifySearchResultSectionProps {
   query: string;
   results?: Array<SpotifyResult>;
   mapFunction: Function;
+  onClick: Function;
 }
 
 interface SpotifySearchResultSectionState {
@@ -44,11 +45,11 @@ export default class SpotifySearchResultSection extends React.Component<SpotifyS
             return (
                 <div className={getClassName(this.mainClass, this.props.className)}>
                     <h6>{this.props.name}</h6>     
-                    <a href='javascript:void(0)' onClick={this.previousPage.bind(this)} className={getClassName(`${this.mainClass}--previous`)}>Previous</a>         
-                    <a href='javascript:void(0)' onClick={this.nextPage.bind(this)} className={getClassName(`${this.mainClass}--next`)}>Next</a>   
+                    <button onClick={this.previousPage.bind(this)} className={getClassName(`${this.mainClass}--previous`)}>Previous</button>         
+                    <button onClick={this.nextPage.bind(this)} className={getClassName(`${this.mainClass}--next`)}>Next</button>   
                     <div className="search-result-section--flex-container">
                         {this.state.results.map( ( result: SpotifyResult ) => {            
-                            return (<SpotifySearchResult key={result.id} result={result} />);
+                            return (<SpotifySearchResult key={result.id} result={result} onClick={this.props.onClick} />);
                         })}  
                     </div>        
                 </div>

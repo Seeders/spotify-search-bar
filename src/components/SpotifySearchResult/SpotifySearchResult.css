@@ -1,9 +1,54 @@
 
 .spotify_search-result {
     width: 128px;
-    margin: 0 1em 0 0;
+    height: 160px;
+    margin: 0 1em 1em 0;
+    padding: 1em;
+    position: relative;
+    cursor: pointer;
+    background-color: #111;
+    border-radius: 16px;
 }
 
-.spotify_search-result img {
+.spotify_search-result:nth-child(5n) {
+    margin: 0;
+}
+
+.spotify_search-result:hover > div {
+    opacity: 1;
+    height: 96px;
+}
+
+.spotify_search-result:hover > div > span {
+    white-space: unset;
+}
+
+.spotify_search-result > div {
+    position: absolute;
+    height: 32px;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: rgba(0, 0, 0, 1);
+    color: #ddd;
+    justify-content: center;
+    display: flex;   
+    border-radius: 0 0 16px 16px; 
+}
+
+.spotify_search-result > div > span {
+    align-self: center;
+    text-align: center;
+    padding: 0 .5em;   
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    width: 100%;
+    display: inline-block;    
+}
+
+.spotify_search-result > img {
+    width: 128px;
     height: 128px;
+    border-radius: 64px;
 }
