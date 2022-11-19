@@ -53,7 +53,7 @@ const graphql = require('graphql')
  var doSearch = function( token, query ) {
  
    var options = {
-     url: getEndpoint('search', `q=${query}&type=track,artist,album`),
+     url: getEndpoint('search', `q=${query}&type=track,artist,album&limit=10`),
      headers: {
        'Authorization': 'Bearer ' + token
      },

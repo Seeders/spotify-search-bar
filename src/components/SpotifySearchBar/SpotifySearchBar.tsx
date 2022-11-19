@@ -5,12 +5,13 @@ require("./SpotifySearchBar.css");
 interface SpotifySearchBarProps {
   className?: string;
   children?: React.ReactNode;
+  resultsCallback: Function;
 }
 interface SpotifySearchBarState {
 }
 export default class SpotifySearchBar extends React.Component<SpotifySearchBarProps, SpotifySearchBarState> {
 
-    changeIntentDelay:number = 400;
+    changeIntentDelay:number = 100;
 
     getClassName() {
         return "spotify-search-bar " + this.props.className;
@@ -25,13 +26,17 @@ export default class SpotifySearchBar extends React.Component<SpotifySearchBarPr
     }
 
     handleChange( event: React.ChangeEvent<HTMLInputElement>) {        
-        changeIntent( event.target.value, this.doChange, this.changeIntentDelay );        
+        changeIntent( event.target.value, this.doChange.bind(this), this.changeIntentDelay );        
     }
 
     doChange( value: string ) {
-        let controller = new SpotifyController();
-        controller.query( value ).then( (res) => {
-            console.log( 'response: ', res );
-        });
+        if( value.length > 0 ) {
+            let controller = new SpotifyController();
+            controller.query( value ).then( (res) => {
+                this.props.resultsCallback( res );
+            });
+        } else {
+            this.props.resultsCallback( null );
+        }
     }
 }

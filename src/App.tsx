@@ -1,5 +1,5 @@
 import React from 'react';
-import SpotifySearchBar from './components/SpotifySearchBar/SpotifySearchBar';
+import SpotifySearchContainer from './components/SpotifySearchContainer/SpotifySearchContainer';
 import './App.css';
 interface AppProps {
   className?: string;
@@ -8,7 +8,7 @@ interface AppProps {
 function App( props: AppProps ) {
   return (
     <div className="App">      
-      <SpotifySearchBar />
+      <SpotifySearchContainer />
     </div>
   );
 }
