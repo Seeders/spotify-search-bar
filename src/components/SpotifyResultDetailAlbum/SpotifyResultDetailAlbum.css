@@ -1,0 +1,19 @@
+.search-result-detail-album--content .spotify_search-result > div {
+    height: 64px;
+}
+
+.search-result-detail-album--content .search-result--flex-container {
+    flex-direction: column;
+    text-align: left;
+    color: #eee;
+}
+
+
+.search-result-detail-album--content ol {
+    margin: 0;
+    padding: 0 0 0 1em;
+}
+
+.search-result-detail-album--content h3 {
+    margin: 0 0 .25em 0;
+}

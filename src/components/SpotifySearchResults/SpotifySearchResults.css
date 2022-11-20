@@ -1,5 +1,5 @@
 
-.search-result-section--flex-container {
+.search-result--flex-container {
     display: flex;
     flex-wrap: wrap;
     width: calc(640px + (14 * 1em));

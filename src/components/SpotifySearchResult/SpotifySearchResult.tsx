@@ -1,19 +1,14 @@
 import * as React from "react";
 import getClassName from "../../utils/GetClassName";
+import { AppData } from "../../App";
 
 require("./SpotifySearchResult.css");
 
-export interface SpotifyResult {
-    id: string,
-    image: string,
-    name: string,
-    type: string
-}
 
 interface SpotifySearchResultProps {
   className?: string;
   children?: React.ReactNode;
-  result: SpotifyResult;
+  result: AppData<any>;
   onClick: Function;
 }
 

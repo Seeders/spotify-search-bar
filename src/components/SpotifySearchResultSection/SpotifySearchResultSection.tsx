@@ -1,8 +1,8 @@
 import * as React from "react";
 import SpotifySearchResult from "../SpotifySearchResult/SpotifySearchResult";
-import { SpotifyResult } from "../SpotifySearchResult/SpotifySearchResult";
 import SpotifyController from "../../controllers/SpotifyController";
-import { SpotifyAPIResult } from "../../controllers/SpotifyController";
+import { SpotifyAlbumsArtistsTracks } from "../../models/SpotifyModels";
+import { AppData } from "../../App";
 import getClassName from "../../utils/GetClassName";
 require("./SpotifySearchResultSection.css");
 
@@ -12,14 +12,14 @@ interface SpotifySearchResultSectionProps {
   name: string;
   type: string;
   query: string;
-  results?: Array<SpotifyResult>;
+  results?: Array<AppData<any>>;
   mapFunction: Function;
   onClick: Function;
 }
 
 interface SpotifySearchResultSectionState {
     currentPage: number;
-    results?: Array<SpotifyResult>;
+    results?: Array<AppData<any>>;
 }
 
 export default class SpotifySearchResultSection extends React.Component<SpotifySearchResultSectionProps, SpotifySearchResultSectionState> {
@@ -44,14 +44,20 @@ export default class SpotifySearchResultSection extends React.Component<SpotifyS
         if( this.state.results ) {
             return (
                 <div className={getClassName(this.mainClass, this.props.className)}>
-                    <h6>{this.props.name}</h6>     
-                    <button onClick={this.previousPage.bind(this)} className={getClassName(`${this.mainClass}--previous`)}>Previous</button>         
-                    <button onClick={this.nextPage.bind(this)} className={getClassName(`${this.mainClass}--next`)}>Next</button>   
-                    <div className="search-result-section--flex-container">
-                        {this.state.results.map( ( result: SpotifyResult ) => {            
-                            return (<SpotifySearchResult key={result.id} result={result} onClick={this.props.onClick} />);
-                        })}  
-                    </div>        
+                    <div>
+                        <button onClick={this.previousPage.bind(this)} className={getClassName(`${this.mainClass}--previous`)}>&lt;</button>  
+                    </div>
+                    <div>
+                        <h6>{this.props.name}</h6>            
+                        <div className="search-result--flex-container">
+                            {this.state.results.map( ( result: AppData<any> ) => {            
+                                return (<SpotifySearchResult key={result.id} result={result} onClick={this.props.onClick} />);
+                            })}  
+                        </div>
+                    </div>      
+                    <div>
+                        <button onClick={this.nextPage.bind(this)} className={getClassName(`${this.mainClass}--next`)}>&gt;</button>     
+                    </div>
                 </div>
             );
         } else {
@@ -80,7 +86,7 @@ export default class SpotifySearchResultSection extends React.Component<SpotifyS
         });
     }
 
-    loadedResults( pageNum: number, results: SpotifyAPIResult ) {
+    loadedResults( pageNum: number, results: SpotifyAlbumsArtistsTracks ) {
         if( results != null ) {   
             this.setState( { currentPage: pageNum, results: this.props.mapFunction(results) } );
         } else {

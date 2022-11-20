@@ -1,7 +1,7 @@
 import * as React from "react";
 import SpotifySearchBar from "../SpotifySearchBar/SpotifySearchBar";
 import SpotifySearchResults from "../SpotifySearchResults/SpotifySearchResults";
-import { SpotifyAPIResult } from "../../controllers/SpotifyController";
+import { SpotifyAlbumsArtistsTracks } from "../../models/SpotifyModels";
 import SpotifyController from "../../controllers/SpotifyController";
 import getClassName from "../../utils/GetClassName";
 
@@ -12,7 +12,7 @@ interface SpotifySearchContainerProps {
 }
 interface SpotifySearchContainerState {
     query: string;
-    results?: SpotifyAPIResult;
+    results?: SpotifyAlbumsArtistsTracks;
 }
 export default class SpotifySearchContainer extends React.Component<SpotifySearchContainerProps, SpotifySearchContainerState> {
 
@@ -55,7 +55,7 @@ export default class SpotifySearchContainer extends React.Component<SpotifySearc
         });
     }
 
-    loadedResults( query: string, results: SpotifyAPIResult ) {
+    loadedResults( query: string, results: SpotifyAlbumsArtistsTracks ) {
         if( results != null ) {
             this.setState( { query: query, results: results } );
         } else {

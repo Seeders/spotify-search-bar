@@ -24,7 +24,7 @@ const graphql = require('graphql')
  var app = express();
  
  var getEndpoint = function( path, query ) {
-   return `${api_url}${path}?${query}`; 
+   return query ? `${api_url}${path}?${query}` : `${api_url}${path}`; 
  }
  
  var getAccessToken = new Promise( ( resolve, reject ) => {
@@ -50,26 +50,49 @@ const graphql = require('graphql')
    });
  } );
  
- var doSearch = function( token, query, type, limit, offset ) {    
+  var doSearch = function( token, query, type, limit, offset ) {    
+    return doRequest( token, getEndpoint('search', `q=${query}&type=${type}&limit=${limit}&offset=${offset}`) );
+  };
 
-   var options = {
-     url: getEndpoint('search', `q=${query}&type=${type}&limit=${limit}&offset=${offset}`),
-     headers: {
-       'Authorization': 'Bearer ' + token
-     },
-     json: true
-   };
-   
-   return new Promise( ( resolve, reject ) => {
-      request.get(options,  (error, response, body) => {
-       if( !error ) {
-         resolve( body );
-       } else {
-         reject();
-       }      
-     });
-   } );
- }
+  var getArtist = function( token, id ) {    
+    return doRequest( token, getEndpoint(`artists/${id}`) );
+  };  
+  
+  var getAlbums = function( token, artist_id, limit ) {    
+    return doRequest( token, getEndpoint(`artists/${artist_id}/albums`, `limit=${limit}`) );
+  };
+  
+  var getAlbum = function( token, album_id ) {    
+    return doRequest( token, getEndpoint(`albums/${album_id}`) );
+  };
+  
+  var getTracks = function( token, album_id, limit ) {    
+    return doRequest( token, getEndpoint(`albums/${album_id}/tracks`, `limit=${limit}`) );
+  };
+  
+  var getTrack = function( token, track_id ) {    
+    return doRequest( token, getEndpoint(`tracks/${track_id}`) );
+  };
+
+  var doRequest = function (token, url) {
+    var options = {
+      url: url,
+      headers: {
+        'Authorization': 'Bearer ' + token
+      },
+      json: true
+    };
+
+    return new Promise( ( resolve, reject ) => {
+        request.get(options,  (error, response, body) => {
+        if( !error ) {
+          resolve( body );
+        } else {
+          reject();
+        }      
+      });
+    } );
+  };
  
  
  
@@ -77,12 +100,49 @@ const graphql = require('graphql')
    getAccessToken.then( ( token ) => {    
      doSearch( token, req.query.q, req.query.type, req.query.limit, req.query.offset).then( ( body ) => {  
        res.send( body );
-     });
- 
+     }); 
    });
  });
  
- 
+ app.use('/artists', (req, res) => {
+  getAccessToken.then( ( token ) => {    
+    getArtist( token, req.query.artist_id).then( ( body ) => {  
+      res.send( body );
+    }); 
+  });
+});
+
+app.use('/albums', (req, res) => {
+  getAccessToken.then( ( token ) => {    
+    if( req.query.artist_id ) {
+      getAlbums( token, req.query.artist_id, req.query.limit ).then( ( body ) => {  
+        res.send( body );
+      }); 
+    } else if( req.query.album_id ) {
+      getAlbum( token, req.query.album_id ).then( ( body ) => {  
+        res.send( body );
+      }); 
+    } else {
+      res.errored();
+    }
+  });
+});
+
+app.use('/tracks', (req, res) => {
+  getAccessToken.then( ( token ) => {    
+    if( req.query.album_id ) {
+      getTracks( token, req.query.album_id, req.query.limit ).then( ( body ) => {  
+        res.send( body );
+      }); 
+    } else if( req.query.track_id ) {
+      getTrack( token, req.query.track_id ).then( ( body ) => {  
+        res.send( body );
+      }); 
+    } else {
+      res.errored();
+    }
+  });
+});
 
 
 const Artist = new graphql.GraphQLObjectType({

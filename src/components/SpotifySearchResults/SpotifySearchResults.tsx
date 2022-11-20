@@ -1,9 +1,13 @@
 import * as React from "react";
 import SpotifySearchResultSection from "../SpotifySearchResultSection/SpotifySearchResultSection";
-import { SpotifyAPIResult, SpotifyAPIArtist, SpotifyAPIAlbum, SpotifyAPITrack } from "../../controllers/SpotifyController";
-import { SpotifyResult } from "../SpotifySearchResult/SpotifySearchResult";
+import { AppData } from "../../App";
+import { SpotifyAlbumsArtistsTracks, SpotifyTrack, SpotifyAlbum, SpotifyArtist, mapAlbum, mapTrack, mapResultArtistItems, mapResultAlbumItems, mapResultTrackItems } from "../../models/SpotifyModels";
 import getClassName from "../../utils/GetClassName";
 import SpotifyController from "../../controllers/SpotifyController";
+import SpotifyResultDetail from "../SpotifyResultDetail/SpotifyResultDetail";
+import SpotifyResultDetailArtist from "../SpotifyResultDetailArtist/SpotifyResultDetailArtist";
+import SpotifyResultDetailAlbum from "../SpotifyResultDetailAlbum/SpotifyResultDetailAlbum";
+import SpotifyResultDetailTrack from "../SpotifyResultDetailTrack/SpotifyResultDetailTrack";
 
 require("./SpotifySearchResults.css");
 
@@ -13,11 +17,12 @@ interface SpotifySearchResultsProps {
   className?: string;
   children?: React.ReactNode;
   query: string;
-  results?: SpotifyAPIResult;
+  results?: SpotifyAlbumsArtistsTracks;
 }
 
 interface SpotifySearchResultsState {
-    results?: SpotifyAPIResult;
+    results?: SpotifyAlbumsArtistsTracks;
+    detail?: JSX.Element
 }
 
 export default class SpotifySearchResults extends React.Component<SpotifySearchResultsProps, SpotifySearchResultsState> {
@@ -26,7 +31,8 @@ export default class SpotifySearchResults extends React.Component<SpotifySearchR
     constructor( props: SpotifySearchResultsProps ) {
         super(props); 
         this.state = {
-            results: this.props.results
+            results: this.props.results,
+            detail: undefined
         };
     
     }
@@ -40,76 +46,53 @@ export default class SpotifySearchResults extends React.Component<SpotifySearchR
 
     render() {       
 
-        let artists, albums, tracks: Array<SpotifyResult> = [];
+        let artists, albums, tracks: Array<AppData<SpotifyTrack>> = [];
         if( this.state.results ) {
-            artists = this.mapArtists(this.state.results);
-            albums = this.mapAlbums(this.state.results);
-            tracks = this.mapTracks(this.state.results);        
+            artists = mapResultArtistItems( this.state.results );
+            albums = mapResultAlbumItems( this.state.results );
+            tracks = mapResultTrackItems( this.state.results );        
         }
         return (
             <div className={getClassName(this.mainClass, this.props.className)}>
-                <SpotifySearchResultSection name="Artists" type="artist" query={this.props.query} results={artists} mapFunction={this.mapArtists} onClick={this.selectArtist} className="search-result-section--artists" />
-                <SpotifySearchResultSection name="Albums" type="album" query={this.props.query} results={albums} mapFunction={this.mapAlbums} onClick={this.selectAlbum} className="search-result-section--albums" />
-                <SpotifySearchResultSection name="Tracks" type="track" query={this.props.query} results={tracks} mapFunction={this.mapTracks} onClick={this.selectTrack} className="search-result-section--tracks" />
+                {this.getDetail()}
+                <SpotifySearchResultSection name="Artists" type="artist" query={this.props.query} results={artists} mapFunction={mapResultArtistItems} onClick={this.selectArtist.bind(this)} className="search-result-section--artists" />
+                <SpotifySearchResultSection name="Albums" type="album" query={this.props.query} results={albums} mapFunction={mapResultAlbumItems} onClick={this.selectAlbum.bind(this)} className="search-result-section--albums" />
+                <SpotifySearchResultSection name="Tracks" type="track" query={this.props.query} results={tracks} mapFunction={mapResultTrackItems} onClick={this.selectTrack.bind(this)} className="search-result-section--tracks" />
             </div>
         );
     }
 
-    mapArtists( results: SpotifyAPIResult ) : Array<SpotifyResult> {
-        if( results && results.artists && results.artists.items ) {
-            return results.artists.items.map( (item:SpotifyAPIArtist) => {
-                return {
-                    id: item.id,
-                    name: item.name,
-                    image: item.images.length ? item.images[0].url : "",
-                    type: "artist"
-                }
-            });
-        } 
-
-        return [];
+    getDetail() {
+        if( this.state.detail ) {
+            return <SpotifyResultDetail onClose={this.closeDetail.bind(this)}>{this.state.detail}</SpotifyResultDetail>;
+        } else {
+            return <></>;
+        }
     }
 
-    mapAlbums( results: SpotifyAPIResult ) : Array<SpotifyResult> {
-        if( results && results.albums && results.albums.items ) {
-            return results.albums.items.map( (item:SpotifyAPIAlbum) => {
-                return {
-                    id: item.id,
-                    name: item.name,
-                    image: item.images.length ? item.images[0].url : "",
-                    type: "album"
-                }
-            });
-        } 
-
-        return [];
+    closeDetail() {
+        this.setState( { detail: undefined } );
     }
 
-    mapTracks( results: SpotifyAPIResult ) : Array<SpotifyResult> {
-        if( results && results.tracks && results.tracks.items ) {
-            return results.tracks.items.map( (item:SpotifyAPITrack) => {
-                return {
-                    id: item.id,
-                    name: item.name,
-                    image: item.album.images.length ? item.album.images[0].url : "",
-                    type: "track"
-                }
-            });
-        } 
-
-        return [];
+    selectArtist( result: AppData<SpotifyArtist> ) {
+        var detail = <SpotifyResultDetailArtist artist={result} />;
+        this.setState( { detail: detail } );
     }
 
-    selectArtist( result: SpotifyResult ) {
-        console.log( "selectArtist", result );
+    selectAlbum( result: AppData<SpotifyAlbum> ) {
+        let controller = new SpotifyController();
+        controller.getAlbum( result.id ? result.id : "" ).then( (res) => {           
+            var detail = <SpotifyResultDetailAlbum album={mapAlbum(res)} />;
+            this.setState( { detail: detail } );
+        });
     }
 
-    selectAlbum( result: SpotifyResult ) {
-        console.log( "selectAlbum", result );
-
+    selectTrack( result: AppData<SpotifyTrack> ) {
+        let controller = new SpotifyController();
+        controller.getTrack( result.id ).then( (res) => {           
+            var detail = <SpotifyResultDetailTrack track={mapTrack(res)} />;
+            this.setState( { detail: detail } );
+        });
     }
 
-    selectTrack( result: SpotifyResult ) {
-        console.log( "selectTrack", result );
-    }
 }
