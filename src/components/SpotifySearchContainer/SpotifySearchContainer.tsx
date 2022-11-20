@@ -2,6 +2,7 @@ import * as React from "react";
 import SpotifySearchBar from "../SpotifySearchBar/SpotifySearchBar";
 import SpotifySearchResults from "../SpotifySearchResults/SpotifySearchResults";
 import { SpotifyAlbumsArtistsTracks } from "../../models/SpotifyModels";
+import SpotifyResultDetail from "../SpotifyResultDetail/SpotifyResultDetail";
 import { query } from "../../api/SpotifyAPI";
 import getClassName from "../../utils/GetClassName";
 
@@ -13,6 +14,7 @@ interface SpotifySearchContainerProps {
 interface SpotifySearchContainerState {
     query: string;
     results?: SpotifyAlbumsArtistsTracks;
+    detail?: JSX.Element;
 }
 export default class SpotifySearchContainer extends React.Component<SpotifySearchContainerProps, SpotifySearchContainerState> {
 
@@ -24,18 +26,28 @@ export default class SpotifySearchContainer extends React.Component<SpotifySearc
   
       this.state = {
         query: "",
-        results: undefined
+        results: undefined,
+        detail: undefined
       };
   
     }
 
     render() {
         if( this.state.results ) {
+            let detail = <></>;
+            if( this.state.detail ) {
+                detail = <div>{this.state.detail}</div>;
+            }
             return (
                 <div className={getClassName(this.mainClass, this.props.className)}>
-                    <SpotifySearchBar submitCallback={this.submitQuery.bind(this)} />    
-                    <h2>"{this.state.query}" Results</h2> 
-                    <SpotifySearchResults query={this.state.query} results={this.state.results} />                        
+                    <div>
+                        <SpotifySearchBar submitCallback={this.submitQuery.bind(this)} />    
+                    </div>
+                    <div>
+                        <h2>"{this.state.query}" Results</h2> 
+                        <SpotifySearchResults query={this.state.query} results={this.state.results} showDetail={this.renderDetail.bind(this)} /> 
+                    </div>
+                    {detail}                       
                 </div>
             );
         } else {
@@ -60,5 +72,13 @@ export default class SpotifySearchContainer extends React.Component<SpotifySearc
         } else {
             this.setState( { query: query, results: undefined } );
         }
+    }
+    
+    renderDetail( content: JSX.Element ) {
+        let detail = <SpotifyResultDetail onClose={this.closeDetail.bind(this)}>{content}</SpotifyResultDetail>
+        this.setState( { detail: detail  } );
+    }
+    closeDetail() {
+        this.setState( { detail: undefined } );
     }
 }
