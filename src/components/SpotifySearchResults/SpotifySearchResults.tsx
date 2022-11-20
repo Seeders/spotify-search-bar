@@ -48,18 +48,23 @@ export default class SpotifySearchResults extends React.Component<SpotifySearchR
     render() {       
 
         let artists, albums, tracks: Array<AppData<SpotifyTrack>> = [];
-        if( this.state.results ) {
+        if( this.state.results && this.props.query.length > 0 ) {
             artists = mapResultArtistItems( this.state.results );
             albums = mapResultAlbumItems( this.state.results );
-            tracks = mapResultTrackItems( this.state.results );        
+            tracks = mapResultTrackItems( this.state.results );               
+            return (
+                <div className={getClassName(this.mainClass, this.props.className)}>                    
+                    <h2>"{this.props.query}" Results</h2> 
+                    <div>
+                        <SpotifySearchResultSection name="Artists" type="artist" query={this.props.query} results={artists} mapFunction={mapResultArtistItems} onClick={this.selectArtist.bind(this)} className="search-result-section--artists" />
+                        <SpotifySearchResultSection name="Albums" type="album" query={this.props.query} results={albums} mapFunction={mapResultAlbumItems} onClick={this.selectAlbum.bind(this)} className="search-result-section--albums" />
+                        <SpotifySearchResultSection name="Tracks" type="track" query={this.props.query} results={tracks} mapFunction={mapResultTrackItems} onClick={this.selectTrack.bind(this)} className="search-result-section--tracks" />
+                    </div>
+                </div>
+            );     
+        } else {
+            return <></>
         }
-        return (
-            <div className={getClassName(this.mainClass, this.props.className)}>
-                <SpotifySearchResultSection name="Artists" type="artist" query={this.props.query} results={artists} mapFunction={mapResultArtistItems} onClick={this.selectArtist.bind(this)} className="search-result-section--artists" />
-                <SpotifySearchResultSection name="Albums" type="album" query={this.props.query} results={albums} mapFunction={mapResultAlbumItems} onClick={this.selectAlbum.bind(this)} className="search-result-section--albums" />
-                <SpotifySearchResultSection name="Tracks" type="track" query={this.props.query} results={tracks} mapFunction={mapResultTrackItems} onClick={this.selectTrack.bind(this)} className="search-result-section--tracks" />
-            </div>
-        );
     }
 
     selectArtist( result: AppData<SpotifyArtist> ) {

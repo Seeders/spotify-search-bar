@@ -1,5 +1,6 @@
 import React from 'react';
 import SpotifySearchContainer from './components/SpotifySearchContainer/SpotifySearchContainer';
+import { getAccessToken } from './api/SpotifyAPI';
 import './App.css';
 
 export interface AppData<T> {
@@ -17,6 +18,9 @@ interface AppProps {
 }
 
 function App( props: AppProps ) {
+  
+  getAccessToken();
+
   return (
     <div className="App">      
       <SpotifySearchContainer />
