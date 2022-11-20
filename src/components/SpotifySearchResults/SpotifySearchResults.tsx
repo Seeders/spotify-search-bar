@@ -3,7 +3,7 @@ import SpotifySearchResultSection from "../SpotifySearchResultSection/SpotifySea
 import { AppData } from "../../App";
 import { SpotifyAlbumsArtistsTracks, SpotifyTrack, SpotifyAlbum, SpotifyArtist, mapAlbum, mapTrack, mapResultArtistItems, mapResultAlbumItems, mapResultTrackItems } from "../../models/SpotifyModels";
 import getClassName from "../../utils/GetClassName";
-import SpotifyController from "../../controllers/SpotifyController";
+import { getAlbum, getTrack } from "../../api/SpotifyAPI";
 import SpotifyResultDetail from "../SpotifyResultDetail/SpotifyResultDetail";
 import SpotifyResultDetailArtist from "../SpotifyResultDetailArtist/SpotifyResultDetailArtist";
 import SpotifyResultDetailAlbum from "../SpotifyResultDetailAlbum/SpotifyResultDetailAlbum";
@@ -80,16 +80,14 @@ export default class SpotifySearchResults extends React.Component<SpotifySearchR
     }
 
     selectAlbum( result: AppData<SpotifyAlbum> ) {
-        let controller = new SpotifyController();
-        controller.getAlbum( result.id ? result.id : "" ).then( (res) => {           
+        getAlbum( result.id ? result.id : "" ).then( (res:SpotifyAlbum) => {           
             var detail = <SpotifyResultDetailAlbum album={mapAlbum(res)} />;
             this.setState( { detail: detail } );
         });
     }
 
     selectTrack( result: AppData<SpotifyTrack> ) {
-        let controller = new SpotifyController();
-        controller.getTrack( result.id ).then( (res) => {           
+        getTrack( result.id ).then( (res:SpotifyTrack) => {           
             var detail = <SpotifyResultDetailTrack track={mapTrack(res)} />;
             this.setState( { detail: detail } );
         });

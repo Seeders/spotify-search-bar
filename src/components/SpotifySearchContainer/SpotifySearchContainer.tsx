@@ -2,7 +2,7 @@ import * as React from "react";
 import SpotifySearchBar from "../SpotifySearchBar/SpotifySearchBar";
 import SpotifySearchResults from "../SpotifySearchResults/SpotifySearchResults";
 import { SpotifyAlbumsArtistsTracks } from "../../models/SpotifyModels";
-import SpotifyController from "../../controllers/SpotifyController";
+import { query } from "../../api/SpotifyAPI";
 import getClassName from "../../utils/GetClassName";
 
 require("./SpotifySearchContainer.css");
@@ -48,10 +48,9 @@ export default class SpotifySearchContainer extends React.Component<SpotifySearc
     }
 
 
-    submitQuery( query: string ) {
-        let controller = new SpotifyController();
-        controller.query( query, "track,artist,album" ).then( (res) => {
-            this.loadedResults( query, res );
+    submitQuery( _query: string ) {
+        query( _query, "track,artist,album" ).then( (res:SpotifyAlbumsArtistsTracks) => {
+            this.loadedResults( _query, res );
         });
     }
 

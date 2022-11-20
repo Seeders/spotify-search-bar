@@ -2,7 +2,7 @@ import * as React from "react";
 import getClassName from "../../utils/GetClassName";
 import { AppData } from "../../App";
 import { SpotifyItems, SpotifyAlbum, mapTracks, SpotifyTrack } from "../../models/SpotifyModels";
-import SpotifyController from "../../controllers/SpotifyController";
+import { getTracks } from "../../api/SpotifyAPI";
 import { formatDuration } from "../../utils/Time";
 
 require("./SpotifyResultDetailAlbum.css");
@@ -67,8 +67,7 @@ export default class SpotifyResultDetailAlbum extends React.Component<SpotifyRes
     }
 
     loadData() {
-        let controller = new SpotifyController();
-        controller.getTracks( this.props.album.id ).then( ( res: SpotifyItems<SpotifyTrack> ) => {       
+        getTracks( this.props.album.id ).then( ( res: SpotifyItems<SpotifyTrack> ) => {       
             this.setState( { tracks: mapTracks(res.items, this.props.album) } );
         });
     }

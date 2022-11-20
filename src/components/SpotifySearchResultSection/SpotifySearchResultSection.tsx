@@ -1,6 +1,6 @@
 import * as React from "react";
 import SpotifySearchResult from "../SpotifySearchResult/SpotifySearchResult";
-import SpotifyController from "../../controllers/SpotifyController";
+import { query } from "../../api/SpotifyAPI";
 import { SpotifyAlbumsArtistsTracks } from "../../models/SpotifyModels";
 import { AppData } from "../../App";
 import getClassName from "../../utils/GetClassName";
@@ -80,8 +80,7 @@ export default class SpotifySearchResultSection extends React.Component<SpotifyS
     } 
     
     submitQuery( pageNum: number ) {
-        let controller = new SpotifyController();
-        controller.query( this.props.query, this.props.type, pageNum ).then( (res) => {
+        query( this.props.query, this.props.type, pageNum ).then( (res:SpotifyAlbumsArtistsTracks) => {
             this.loadedResults( pageNum, res );
         });
     }
