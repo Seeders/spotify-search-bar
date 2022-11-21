@@ -49,12 +49,12 @@ export default class SpotifyResultDetailAlbum extends React.Component<SpotifyRes
                     </div>
                     <div>
                         <h2>{this.props.album.name}</h2>
-                        <img className="spotify_result-detail--image" src={this.props.album.image} /> 
+                        <img className={getClassName('result-detail--image')} src={this.props.album.image} /> 
                         <div>
                             <h3>Album Released</h3>
                             {this.props.album.meta.release_date}
                         </div>
-                        <p><a href={this.props.album.meta.uri}>Play Now</a></p>     
+                        <p><a className={getClassName('result-detail--play-button')} href={this.props.album.meta.uri}>Play Now</a></p>     
                     </div>
                     <div>
                         <h2>Tracks</h2> 

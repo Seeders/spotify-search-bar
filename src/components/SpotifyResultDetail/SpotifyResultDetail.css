@@ -48,6 +48,26 @@
     padding: 0;
 }
 
+.App .spotify_result-detail--play-button {
+  background-color: transparent;
+  border: 1px solid #da241d;
+  border-radius: 4px;
+  box-sizing: border-box;
+  color: #da241d;
+  cursor: pointer;
+  display: inline-block;
+  font-size: 14px;
+  padding: 6px 16px;
+  text-align: center;
+  text-decoration: none;
+  vertical-align: middle;
+}
+
+.App .spotify_result-detail--play-button:hover {
+    color: #fff;
+    background-color: #da241d;
+}
+
 @media (max-width: 893px) {
     .spotify_result-detail > div {
         min-height: 100%;
