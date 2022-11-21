@@ -63,8 +63,12 @@ export default class SpotifyResultDetailArtist extends React.Component<SpotifyRe
     }
 
     loadAlbums() {
-        getAlbums( this.props.artist.id ).then( ( res: SpotifyItems<SpotifyAlbum> ) => {        
-            this.setState( { albums: mapAlbums(res.items), artist: this.props.artist } );
+        getAlbums( this.props.artist.id ).then( ( res: SpotifyItems<SpotifyAlbum> ) => {     
+            let albums = mapAlbums(res.items);
+            albums = albums.sort((a, b) => {
+                return parseInt(b.meta.release_date.split("-")[0]) - parseInt(a.meta.release_date.split("-")[0]);
+            });
+            this.setState( { albums: albums, artist: this.props.artist } );
         });
     }
 

@@ -51,6 +51,7 @@ export default class SpotifyResultDetailAlbum extends React.Component<SpotifyRes
                             <h3>Album Released</h3>
                             {this.props.album.meta.release_date}
                         </div>
+                        <p><a href={this.props.album.meta.uri}>Play Now</a></p>     
                     </div>
                     <div>
                         <h2>Tracks</h2> 

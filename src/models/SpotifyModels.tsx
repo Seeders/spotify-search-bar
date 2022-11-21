@@ -104,7 +104,7 @@ export function mapAlbum( item:SpotifyAlbum ) {
     return {
         id: item.id,
         parent_id: item.artists.length ? item.artists[0].id : "",
-        name: item.name,
+        name: `(${item.release_date.split('-')[0]}) - ${item.name}`,
         image: item.images.length ? item.images[0].url : "",
         type: "album",
         meta: item

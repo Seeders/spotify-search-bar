@@ -46,7 +46,8 @@ export default class SpotifyResultDetailTrack extends React.Component<SpotifyRes
                     <div className="search-result-detail-artist--content" onScroll={this.handleScroll} onWheel={this.handleScroll} >         
                         <h2>{this.props.track.name}</h2>                                
                         <p>Duration: {formattedDuration}</p>
-                        <p>Track Number: {this.props.track.meta.track_number}</p>                        
+                        <p>Track Number: {this.props.track.meta.track_number}</p>  
+                        <p><a href={this.props.track.meta.uri}>Play Now</a></p>                        
                     </div>  
                     <div>
                         <div>

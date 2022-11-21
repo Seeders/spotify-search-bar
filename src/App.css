@@ -3,18 +3,19 @@ body {
 }
 .App {
   text-align: center;
+  color: #ccc;
+}
+
+.App button  {  
   color: #eee;
 }
 
-button  {  
-  color: #eee;
-}
-
-a {
+.App a {
+  color: #a33;
   cursor: pointer;
-  text-decoration: underline;
+  text-decoration: none;
 }
 
-a:hover {
+.App a:hover {
   color: #aaa;
 }
