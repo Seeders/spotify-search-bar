@@ -4,7 +4,6 @@ import { AppData } from "../../App";
 import { SpotifyAlbumsArtistsTracks, SpotifyTrack, SpotifyAlbum, SpotifyArtist, mapAlbum, mapTrack, mapResultArtistItems, mapResultAlbumItems, mapResultTrackItems } from "../../models/SpotifyModels";
 import getClassName from "../../utils/GetClassName";
 import { getAlbum, getTrack } from "../../api/SpotifyAPI";
-import SpotifyResultDetail from "../SpotifyResultDetail/SpotifyResultDetail";
 import SpotifyResultDetailArtist from "../SpotifyResultDetailArtist/SpotifyResultDetailArtist";
 import SpotifyResultDetailAlbum from "../SpotifyResultDetailAlbum/SpotifyResultDetailAlbum";
 import SpotifyResultDetailTrack from "../SpotifyResultDetailTrack/SpotifyResultDetailTrack";

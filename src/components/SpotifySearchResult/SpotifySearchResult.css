@@ -7,7 +7,7 @@
     position: relative;
     cursor: pointer;
     background-color: #222;
-    border-radius: 16px;
+    border-radius: 4px;
 }
 .spotify_search-result:hover { 
     background-color: #333;
@@ -30,7 +30,7 @@
     background-color: rgba(0, 0, 0, 1);
     justify-content: center;
     display: flex;   
-    border-radius: 0 0 16px 16px; 
+    border-radius: 0 0 4px 4px; 
 }
 
 .spotify_search-result > div > a {
