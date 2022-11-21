@@ -65,7 +65,7 @@ export default class SpotifyResultDetailAlbum extends React.Component<SpotifyRes
                                     let formattedDuration = formatDuration(track.meta.duration_ms),
                                         display = `${track.name} - ( ${formattedDuration} )`;   
                                     return (
-                                        <li key={track.id}><a onClick={this.clickedTrack.bind(this)} data-index={index}>{display}</a></li>
+                                        <li key={track.id}><a tabIndex={0} onClick={this.clickedTrack.bind(this)} data-index={index}>{display}</a></li>
                                     );
                                 })} 
                                 </ol> 

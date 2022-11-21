@@ -49,8 +49,8 @@ export default class SpotifyResultDetailArtist extends React.Component<SpotifyRe
                         <h2>Albums</h2> 
                         <div className={getClassName(`${this.mainClass}--content`)} >                       
                             <div className="spotify_result--flex-container">
-                                {this.state.albums.map( ( result: AppData<SpotifyAlbum> ) => {                 
-                                    return (<SpotifySearchResult key={result.id} item={result} onClick={this.clickAlbum.bind(this)} />);
+                                {this.state.albums.map( ( result: AppData<SpotifyAlbum>, index: number ) => {                 
+                                    return (<SpotifySearchResult key={index} item={result} onClick={this.clickAlbum.bind(this)} />);
                                 })}  
                             </div>         
                         </div>                       
