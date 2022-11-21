@@ -7,7 +7,7 @@
 .spotify_search-result-section--next, .spotify_search-result-section--previous {
     position: relative;
     width: 32px;
-    height: 98%;
+    height: calc(100% - 1.25em);
     border-radius: 4px;
     cursor: pointer;
     font-weight: bold;
