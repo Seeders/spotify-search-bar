@@ -46,7 +46,7 @@ export default class SpotifyResultDetailArtist extends React.Component<SpotifyRe
             return (
                 <div className={getClassName(this.mainClass, this.props.className)}>
                     <div className="spotify_result-detail--breadcrumb">
-                        <span>{this.props.artist.name}</span> - ( Artist )
+                        <span>{this.props.artist.name}</span> - <span className="spotify_text-parenthesis">(Artist)</span>
                     </div>
                     <div>
                         <h2>{this.props.artist.name}</h2>

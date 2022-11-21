@@ -44,8 +44,8 @@ export default class SpotifyResultDetailAlbum extends React.Component<SpotifyRes
             return (
                 <div className={getClassName(this.mainClass, this.props.className)}>
                     <div className="spotify_result-detail--breadcrumb">
-                        <a tabIndex={0} onClick={this.clickedArtist.bind(this)}>{this.props.album.meta.artists[0].name}</a> - ( Artist )<br />
-                        &emsp;&gt; <span>{this.props.album.name}</span> - ( Album )
+                        <a tabIndex={0} onClick={this.clickedArtist.bind(this)}>{this.props.album.meta.artists[0].name}</a> - <span className="spotify_text-parenthesis">(Artist)</span><br />
+                        &emsp;&gt; <span>{this.props.album.name}</span> - <span className="spotify_text-parenthesis">(Album)</span>
                     </div>
                     <div>
                         <h2>{this.props.album.name}</h2>
@@ -60,11 +60,16 @@ export default class SpotifyResultDetailAlbum extends React.Component<SpotifyRes
                         <h2>Tracks</h2> 
                         <div className={getClassName(`${this.mainClass}--content`)}>                       
                             <div className="spotify_result--flex-container">
-                                {this.state.tracks.map( ( track: AppData<SpotifyTrack>, index: number ) => {    
-                                    let formattedDuration = formatDuration(track.meta.duration_ms),
-                                        display = `${track.name} - ( ${formattedDuration} )`;   
+                                {this.state.tracks.map( ( track: AppData<SpotifyTrack>, index: number ) => {       
+                                    let trackNumber = (index < 9 ? '0' + (index + 1) : index + 1);
                                     return (
-                                        <div key={index}>{(index < 9 ? '0' + (index + 1) : index + 1)}. <a tabIndex={0} onClick={this.clickedTrack.bind(this)} data-index={index}>{display}</a></div>
+                                        <div key={index}>
+                                            {trackNumber}.&nbsp;
+                                            <a tabIndex={0} onClick={this.clickedTrack.bind(this)} data-index={index}>
+                                                {track.name}
+                                            </a> 
+                                            &nbsp;<span className="spotify_text-parenthesis">({formatDuration(track.meta.duration_ms)})</span>
+                                        </div>
                                     );
                                 })} 
                             </div>         
