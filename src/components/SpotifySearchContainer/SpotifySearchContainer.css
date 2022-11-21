@@ -33,7 +33,6 @@
     grid-row-end: span 1;
     background-color: #161616;
     border-radius: 4px 0 4px 0;    
-    min-width: 384px;
 }
 
 @media (max-width: 893px) {
@@ -64,7 +63,7 @@
     }
 }
 
-@media (min-width: 1393px) {
+@media (min-width: 1425px) {
     .spotify_search-container {
         grid-template-columns: 992px 1fr;
     }
