@@ -27,6 +27,8 @@ export default class SpotifySearchBar extends React.Component<SpotifySearchBarPr
      * handle user input in search box.
      **/
     handleChange( event: React.ChangeEvent<HTMLInputElement>) {   
-        this.props.submitCallback( event.target.value );           
+        if(  event.target.value.length > 0 ) {
+            this.props.submitCallback( event.target.value );           
+        }
     }
 }
