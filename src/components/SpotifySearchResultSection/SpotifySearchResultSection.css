@@ -2,6 +2,8 @@
     position: relative;
     margin: 0 auto;
     display: flex;
+    justify-content: space-between;
+    width: 100%;
 }
 
 .spotify_search-result-section--next, .spotify_search-result-section--previous {
@@ -18,4 +20,11 @@
 
 .spotify_search-result-section--next:hover, .spotify_search-result-section--previous:hover {
     background-color: #333;
+}
+
+.spotify_search-result-section-empty {
+    height: 208px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }

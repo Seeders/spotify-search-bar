@@ -41,31 +41,33 @@ export default class SpotifySearchResultSection extends React.Component<SpotifyS
     }
 
     render() {
-        if( this.state.results ) {
-            return (
-                <div className={getClassName(this.mainClass, this.props.className)}>
-                    <div>
-                        <button onClick={this.previousPage.bind(this)} className={getClassName(`${this.mainClass}--previous`)}>&lt;</button>  
+        let content = (
+            <div className={getClassName(this.mainClass, this.props.className)}>
+                <div className={getClassName(`${this.mainClass}-empty`)}>No {this.props.type}s found.</div>
+            </div>
+        );
+        if( this.state.results && this.state.results.length > 0 ) {
+            content = (
+                    <div className="search-result--flex-container">
+                        {this.state.results.map( ( result: AppData<any> ) => {            
+                            return (<SpotifySearchResult key={result.id} result={result} onClick={this.props.onClick} />);
+                        })}  
                     </div>
-                    <div>        
-                        <div className="search-result--flex-container">
-                            {this.state.results.map( ( result: AppData<any> ) => {            
-                                return (<SpotifySearchResult key={result.id} result={result} onClick={this.props.onClick} />);
-                            })}  
-                        </div>
-                    </div>      
-                    <div>
-                        <button onClick={this.nextPage.bind(this)} className={getClassName(`${this.mainClass}--next`)}>&gt;</button>     
-                    </div>
-                </div>
-            );
-        } else {
-            return (
-                <div className={getClassName(this.mainClass, this.props.className)}>
-                   
-                </div>
             );
         }
+        return (
+            <div className={getClassName(this.mainClass, this.props.className)}>
+                <div>
+                    <button onClick={this.previousPage.bind(this)} className={getClassName(`${this.mainClass}--previous`)}>&lt;</button>  
+                </div>
+                <div>        
+                   {content}
+                </div>      
+                <div>
+                    <button onClick={this.nextPage.bind(this)} className={getClassName(`${this.mainClass}--next`)}>&gt;</button>     
+                </div>
+            </div>
+        );
     }
 
     previousPage() {

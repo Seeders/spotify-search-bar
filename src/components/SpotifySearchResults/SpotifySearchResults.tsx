@@ -47,7 +47,7 @@ export default class SpotifySearchResults extends React.Component<SpotifySearchR
     render() {       
 
         let artists, albums, tracks: Array<AppData<SpotifyTrack>> = [];
-        if( this.state.results && this.props.query.length > 0 ) {
+        if( this.state.results && this.props.query.length > 0 && this.state.results.artists.items.length > 0 ) {
             artists = mapResultArtistItems( this.state.results );
             albums = mapResultAlbumItems( this.state.results );
             tracks = mapResultTrackItems( this.state.results );               
