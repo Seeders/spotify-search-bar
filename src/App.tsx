@@ -1,5 +1,5 @@
 import React from 'react';
-import SpotifySearchContainer from './components/SpotifySearchContainer/SpotifySearchContainer';
+import SpotifyAppContainer from './components/SpotifyAppContainer/SpotifyAppContainer';
 import './App.css';
 
 export interface AppData<T> {
@@ -28,7 +28,7 @@ function App( props: AppProps ) {
 
   return (
     <div className="App">      
-      <SpotifySearchContainer />
+      <SpotifyAppContainer />
     </div>
   );
 }

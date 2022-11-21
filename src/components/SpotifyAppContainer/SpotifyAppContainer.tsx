@@ -11,14 +11,14 @@ import SpotifyResultDetailArtist from "../SpotifyResultDetailArtist/SpotifyResul
 import SpotifyResultDetailAlbum from "../SpotifyResultDetailAlbum/SpotifyResultDetailAlbum";
 import SpotifyResultDetailTrack from "../SpotifyResultDetailTrack/SpotifyResultDetailTrack";
 
-require("./SpotifySearchContainer.css");
+require("./SpotifyAppContainer.css");
 
-interface SpotifySearchContainerProps {
+interface SpotifyAppContainerProps {
   className?: string;
   children?: React.ReactNode;
 }
 
-interface SpotifySearchContainerState {
+interface SpotifyAppContainerState {
     query: string; //most recent query from user input
     results?: SpotifyAlbumsArtistsTracks; //search results based on user input
     detail?: JSX.Element; //if the user has drilled in to something, this will be the detail pane for it
@@ -28,12 +28,12 @@ interface SpotifySearchContainerState {
  * It makes the api request when the search bar triggers a query and passes us the search string from the user, then tells SpotifySearchResults to render the results.
  * It also passes the query from the search bar to the results and detail pane.
  **/
-export default class SpotifySearchContainer extends React.Component<SpotifySearchContainerProps, SpotifySearchContainerState> {
+export default class SpotifyAppContainer extends React.Component<SpotifyAppContainerProps, SpotifyAppContainerState> {
 
     mainClass : string = "search-container";
-    state: SpotifySearchContainerState;
+    state: SpotifyAppContainerState;
 
-    constructor( props: SpotifySearchContainerProps ) {
+    constructor( props: SpotifyAppContainerProps ) {
         super(props); 
         let query = localStorage.getItem( 'spotify_last-query' );
         this.state = {

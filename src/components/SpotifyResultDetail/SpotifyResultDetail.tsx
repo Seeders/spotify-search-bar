@@ -13,6 +13,9 @@ interface SpotifyResultDetailProps {
 
 interface SpotifyResultDetailState {}
 
+/**
+ * Detail Pane container for Artist, Album, and Track detail panes.
+ **/
 export default class SpotifyResultDetail extends React.Component<SpotifyResultDetailProps, SpotifyResultDetailState> {
 
     mainClass : string = "result-detail";
