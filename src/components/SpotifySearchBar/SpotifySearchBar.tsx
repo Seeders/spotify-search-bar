@@ -1,14 +1,16 @@
 import * as React from "react";
-import changeIntent from "../../utils/ChangeIntent";
 import getClassName from "../../utils/GetClassName";
 require("./SpotifySearchBar.css");
+
 interface SpotifySearchBarProps {
   className?: string;
   children?: React.ReactNode;
   submitCallback: Function; //function to call on user input
 }
+
 interface SpotifySearchBarState {
 }
+
 export default class SpotifySearchBar extends React.Component<SpotifySearchBarProps, SpotifySearchBarState> {
     mainClass : string = "search-bar";
     changeIntentDelay:number = 100;

@@ -10,7 +10,7 @@ interface SpotifySearchResultProps {
   className?: string;
   children?: React.ReactNode;
   item: AppData<SpotifyAlbum|SpotifyArtist|SpotifyTrack>;
-  onClick: Function;
+  onClick: Function; //callback function when clicking this item, generally a showDetail function.
 }
 
 interface SpotifySearchResultState {}

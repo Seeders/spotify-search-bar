@@ -15,24 +15,25 @@ require("./SpotifySearchResults.css");
 interface SpotifySearchResultsProps {
   className?: string;
   children?: React.ReactNode;
-  query: string;
-  results?: SpotifyAlbumsArtistsTracks;
-  showDetail: Function;
+  query: string; //the query from the user input
+  results?: SpotifyAlbumsArtistsTracks; //set of results from the API
+  showDetail: Function; //callback function to render a detail pane.
 }
 
 interface SpotifySearchResultsState {
-    results?: SpotifyAlbumsArtistsTracks;
-    detail?: JSX.Element
+    results?: SpotifyAlbumsArtistsTracks; //current result set
 }
 
+/**
+ * Renders Artists, Albums, and Tracks as SearchResultSection components.
+ **/
 export default class SpotifySearchResults extends React.Component<SpotifySearchResultsProps, SpotifySearchResultsState> {
     mainClass : string = "search-results";
 
     constructor( props: SpotifySearchResultsProps ) {
         super(props); 
         this.state = {
-            results: this.props.results,
-            detail: undefined
+            results: this.props.results
         };
     
     }

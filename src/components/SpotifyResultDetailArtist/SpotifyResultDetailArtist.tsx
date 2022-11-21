@@ -21,6 +21,9 @@ interface SpotifyResultDetailArtistState {
     sortDirection: boolean; //boolean representing asc/desc based on release date
 }
 
+/**
+ * Detail Pane to show Artist information.
+ **/
 export default class SpotifyResultDetailArtist extends React.Component<SpotifyResultDetailArtistProps, SpotifyResultDetailArtistState> {
 
     mainClass : string = "search-result-detail-artist";

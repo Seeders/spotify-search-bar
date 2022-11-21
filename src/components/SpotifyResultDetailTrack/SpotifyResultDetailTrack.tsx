@@ -20,6 +20,9 @@ interface SpotifyResultDetailTrackState {
     album?: AppData<SpotifyAlbum>;
 }
 
+/**
+ * Detail Pane to show Track information.
+ **/
 export default class SpotifyResultDetailTrack extends React.Component<SpotifyResultDetailTrackProps, SpotifyResultDetailTrackState> {
 
     mainClass : string = "search-result-detail-track";

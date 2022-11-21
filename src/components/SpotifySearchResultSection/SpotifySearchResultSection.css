@@ -22,6 +22,14 @@
     background-color: #333;
 }
 
+.spotify_search-result-section--next:disabled, .spotify_search-result-section--previous:disabled,
+.spotify_search-result-section--next:disabled:hover, .spotify_search-result-section--previous:disabled:hover {
+    background-color: #141414;
+    color: #666;
+    cursor: auto;
+}
+
+
 .spotify_search-result-section-empty {
     height: 208px;
     display: flex;

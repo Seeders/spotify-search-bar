@@ -18,6 +18,10 @@ export default class SpotifyResultDetail extends React.Component<SpotifyResultDe
     mainClass : string = "result-detail";
 
     render() {
+        //always show the detail when we update the detail.  
+        //this assumes the detail will always be visible from the top scroll position
+        //i used this in place of a modal because i dont mind scrolling vertically beyond the detail to see more search results.
+        //then if a user clicks a result, it just scrolls to the top and shows it in the detail pane.        
         window.scrollTo({ top: 0 });
         return (
             <div className={getClassName(this.mainClass, this.props.className)}>                

@@ -3,10 +3,14 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import { getAccessToken } from './api/SpotifyAPI';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
+  
+getAccessToken();
+
 root.render(
   <React.StrictMode>
     <App />

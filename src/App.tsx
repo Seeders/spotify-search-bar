@@ -1,6 +1,5 @@
 import React from 'react';
 import SpotifySearchContainer from './components/SpotifySearchContainer/SpotifySearchContainer';
-import { getAccessToken } from './api/SpotifyAPI';
 import './App.css';
 
 export interface AppData<T> {
@@ -18,8 +17,6 @@ interface AppProps {
 }
 
 function App( props: AppProps ) {
-  
-  getAccessToken();
 
   document.addEventListener('keydown', ( event: KeyboardEvent) => {
     if (event && event.key === 'Enter') {

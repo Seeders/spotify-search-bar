@@ -9,12 +9,12 @@ require("./SpotifySearchResultSection.css");
 interface SpotifySearchResultSectionProps {
   className?: string;
   children?: React.ReactNode;
-  name: string;
-  type: string;
-  query: string;
-  results?: Array<AppData<any>>;
-  mapFunction: Function;
-  onClick: Function;
+  name: string; // Artist/Album/Track
+  type: string; // Artist/Album/Track
+  query: string; // searched input text from the user
+  results?: Array<AppData<any>>; //current set of results to render
+  mapFunction: Function; //what mapping function to use with new results from pagination
+  onClick: Function; //callback function for clicking a particular item in the list
 }
 
 interface SpotifySearchResultSectionState {
@@ -22,6 +22,10 @@ interface SpotifySearchResultSectionState {
     results?: Array<AppData<any>>;
 }
 
+/**
+ * Renders 10 results from the Spotify API as SpotifySearchResult components.
+ * Contains pagination to retrieve the next/previous 10 items 
+ **/
 export default class SpotifySearchResultSection extends React.Component<SpotifySearchResultSectionProps, SpotifySearchResultSectionState> {
     mainClass : string = "search-result-section";
 
@@ -61,7 +65,7 @@ export default class SpotifySearchResultSection extends React.Component<SpotifyS
         return (
             <div className={getClassName(this.mainClass, this.props.className)}>
                 <div>
-                    <button onClick={this.previousPage.bind(this)} className={getClassName(`${this.mainClass}--previous`)}>&lt;</button>  
+                    <button disabled={this.state.currentPage == 0} onClick={this.previousPage.bind(this)} className={getClassName(`${this.mainClass}--previous`)}>&lt;</button>  
                 </div>
                 <div>        
                    {content}

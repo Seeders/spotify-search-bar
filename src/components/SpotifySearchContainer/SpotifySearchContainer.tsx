@@ -7,15 +7,22 @@ import { query } from "../../api/SpotifyAPI";
 import getClassName from "../../utils/GetClassName";
 
 require("./SpotifySearchContainer.css");
+
 interface SpotifySearchContainerProps {
   className?: string;
   children?: React.ReactNode;
 }
+
 interface SpotifySearchContainerState {
     query: string; //most recent query from user input
     results?: SpotifyAlbumsArtistsTracks; //search results based on user input
     detail?: JSX.Element; //if the user has drilled in to something, this will be the detail pane for it
 }
+/**
+ * Main UI container that lays out the search bar, search results, and detail panes.
+ * It makes the api request when the search bar triggers a query and passes us the search string from the user, then tells SpotifySearchResults to render the results.
+ * It also passes the query from the search bar to the results and detail pane.
+ **/
 export default class SpotifySearchContainer extends React.Component<SpotifySearchContainerProps, SpotifySearchContainerState> {
 
     mainClass : string = "search-container";
