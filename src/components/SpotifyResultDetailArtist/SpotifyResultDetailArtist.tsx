@@ -18,6 +18,7 @@ interface SpotifyResultDetailArtistProps {
 interface SpotifyResultDetailArtistState {
     albums?: Array<AppData<SpotifyAlbum>> //we load these albums based on the artist from this.props
     artist: AppData<SpotifyArtist>; //store the artist in state in case another artist is loaded in this.props, then we will know we need to query albums again.
+    sortDirection: boolean; //boolean representing asc/desc based on release date
 }
 
 export default class SpotifyResultDetailArtist extends React.Component<SpotifyResultDetailArtistProps, SpotifyResultDetailArtistState> {
@@ -29,13 +30,19 @@ export default class SpotifyResultDetailArtist extends React.Component<SpotifyRe
     
         this.state = {
             albums: undefined,
-            artist: this.props.artist
+            artist: this.props.artist,
+            sortDirection: false
         };
     
     }
 
     render() {
         if( this.state.artist == this.props.artist && this.state.albums ) {
+            let sortDirection = '^';
+            if( this.state.sortDirection ) {
+                sortDirection = 'v';
+            }
+            
             return (
                 <div className={getClassName(this.mainClass, this.props.className)}>
                     <div className="spotify_result-detail--breadcrumb">
@@ -46,7 +53,7 @@ export default class SpotifyResultDetailArtist extends React.Component<SpotifyRe
                         <img className="spotify_result-detail--image" src={this.props.artist.image} />                     
                     </div>
                     <div>
-                        <h2>Albums</h2> 
+                        <h2>Albums <a onClick={this.toggleSort.bind(this)}>{sortDirection}</a></h2> 
                         <div className={getClassName(`${this.mainClass}--content`)} >                       
                             <div className="spotify_result--flex-container">
                                 {this.state.albums.map( ( result: AppData<SpotifyAlbum>, index: number ) => {                 
@@ -66,16 +73,28 @@ export default class SpotifyResultDetailArtist extends React.Component<SpotifyRe
      * Given an artist, load their albums from the api, then sort by release date.
      **/
     loadAlbums() {
-        getAlbums( this.props.artist.id ).then( ( res: SpotifyItems<SpotifyAlbum> ) => {     
-            
-            let albums = mapAlbums(res.items);
-            
-            //sort albums by release date
-            albums = albums.sort((a, b) => {
-                return parseInt(b.meta.release_date.split("-")[0]) - parseInt(a.meta.release_date.split("-")[0]);
-            });
-            
+        getAlbums( this.props.artist.id ).then( ( res: SpotifyItems<SpotifyAlbum> ) => {                 
+            let albums = this.sortAlbums(mapAlbums(res.items), this.state.sortDirection);    
             this.setState( { albums: albums, artist: this.props.artist } );
+        });
+    }
+
+    toggleSort() {
+        let albums = this.state.albums;
+        if( albums ) {
+            albums = this.sortAlbums( albums, !this.state.sortDirection );
+        }
+        this.setState( { sortDirection: !this.state.sortDirection, albums: albums } );
+    }
+
+    sortAlbums(albums:Array<AppData<SpotifyAlbum>>, sortDirection: boolean) : Array<AppData<SpotifyAlbum>> {
+        //sort albums by release date
+        return albums.sort((a, b) => {
+            if( sortDirection ) {
+                return parseInt(a.meta.release_date.split("-")[0]) - parseInt(b.meta.release_date.split("-")[0]);
+            } else {
+                return parseInt(b.meta.release_date.split("-")[0]) - parseInt(a.meta.release_date.split("-")[0]);
+            }
         });
     }
 
