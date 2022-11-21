@@ -22,11 +22,10 @@ function doAPIRequest(url:string) : Promise<any> {
         rateLimitedTime = localStorage.getItem( 'spotify_rate-limited-time' );
 
     if( rateLimited && rateLimitedTime ) {
-        console.warn( 'Rate limited!', rateLimited, rateLimitedTime );
         let dateTime = new Date().getTime();
         let limitTime = parseInt(rateLimitedTime) + parseInt(rateLimited) * 1000;
         if( dateTime < limitTime ) {
-            return Promise.reject();
+            return Promise.reject('Rate limited!');
         }
         localStorage.removeItem( 'spotify_rate-limited' );
         localStorage.removeItem( 'spotify_rate-limited-time' );

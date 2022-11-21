@@ -56,6 +56,8 @@ export default class SpotifySearchContainer extends React.Component<SpotifySearc
         if( _query.length > 0 ) {
             query( _query, "track,artist,album" ).then( (res:SpotifyAlbumsArtistsTracks) => {
                 this.loadedResults( _query, res );
+            }).catch((error:string) => {
+                console.warn( error );
             });
         } else {
             this.loadedResults( _query, null );
