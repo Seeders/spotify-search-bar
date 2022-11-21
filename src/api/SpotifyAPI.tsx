@@ -28,6 +28,8 @@ function doAPIRequest(url:string) : Promise<any> {
         if( dateTime < limitTime ) {
             return Promise.reject();
         }
+        localStorage.removeItem( 'spotify_rate-limited' );
+        localStorage.removeItem( 'spotify_rate-limited-time' );
     }
 
     if( token ) {
