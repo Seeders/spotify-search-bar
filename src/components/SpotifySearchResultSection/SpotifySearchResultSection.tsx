@@ -34,6 +34,9 @@ export default class SpotifySearchResultSection extends React.Component<SpotifyS
         };    
     }
 
+    /**
+     * Reset state and current page when new results are set.
+     */
     componentDidUpdate( prevProps : SpotifySearchResultSectionProps ) {
         if (prevProps.results !== this.props.results ) {
             this.setState( { currentPage: 0, results: this.props.results } );
@@ -50,7 +53,7 @@ export default class SpotifySearchResultSection extends React.Component<SpotifyS
             content = (
                     <div className="search-result--flex-container">
                         {this.state.results.map( ( result: AppData<any> ) => {            
-                            return (<SpotifySearchResult key={result.id} result={result} onClick={this.props.onClick} />);
+                            return (<SpotifySearchResult key={result.id} item={result} onClick={this.props.onClick} />);
                         })}  
                     </div>
             );
@@ -70,22 +73,34 @@ export default class SpotifySearchResultSection extends React.Component<SpotifyS
         );
     }
 
+    /**
+     * Pagination - query for the previous page of results
+     **/
     previousPage() {
         if( this.state.currentPage > 0 ) {
             this.submitQuery( this.state.currentPage - 1 );
         }
     }
 
+    /**
+     * Pagination - query for the next page of results
+     **/
     nextPage() {
         this.submitQuery( this.state.currentPage + 1 );
     } 
-    
+
+    /**
+     * Pagination - query for the a particular page of results
+     **/
     submitQuery( pageNum: number ) {
         query( this.props.query, this.props.type, pageNum ).then( (res:SpotifyAlbumsArtistsTracks) => {
             this.loadedResults( pageNum, res );
         });
     }
 
+    /**
+     * Pagination - result handler
+     **/
     loadedResults( pageNum: number, results: SpotifyAlbumsArtistsTracks ) {
         if( results != null ) {   
             this.setState( { currentPage: pageNum, results: this.props.mapFunction(results) } );

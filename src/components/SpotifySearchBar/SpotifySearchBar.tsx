@@ -5,7 +5,7 @@ require("./SpotifySearchBar.css");
 interface SpotifySearchBarProps {
   className?: string;
   children?: React.ReactNode;
-  submitCallback: Function;
+  submitCallback: Function; //function to call on user input
 }
 interface SpotifySearchBarState {
 }
@@ -21,11 +21,14 @@ export default class SpotifySearchBar extends React.Component<SpotifySearchBarPr
         );
     }
 
-    handleChange( event: React.ChangeEvent<HTMLInputElement>) {        
-        changeIntent( event.target.value, this.doChange.bind(this), this.changeIntentDelay );        
+    /**
+     * handle user input in search box.
+     **/
+    handleChange( event: React.ChangeEvent<HTMLInputElement>) {   
+        this.props.submitCallback( event.target.value );      
+        //changeIntent(, this.doChange.bind(this), this.changeIntentDelay );        
     }
 
-    doChange( value: string ) {
-       this.props.submitCallback( value ); 
-    }
+    // doChange( value: string ) {
+    // }
 }

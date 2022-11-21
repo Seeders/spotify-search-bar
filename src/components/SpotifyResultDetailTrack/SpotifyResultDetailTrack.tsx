@@ -12,8 +12,8 @@ require("./SpotifyResultDetailTrack.css");
 interface SpotifyResultDetailTrackProps {
   className?: string;
   children?: React.ReactNode;
-  track: AppData<SpotifyTrack>;
-  showDetail: Function;
+  track: AppData<SpotifyTrack>; //track data to display details for
+  showDetail: Function; //call this with one of the detail panes to show the pane.
 }
 
 interface SpotifyResultDetailTrackState {
@@ -43,7 +43,7 @@ export default class SpotifyResultDetailTrack extends React.Component<SpotifyRes
                         &emsp; <a onClick={this.clickedAlbum.bind(this)}>{this.props.track.meta.album.name}</a> - ( Album )<br /> 
                         &emsp;&emsp;&gt; <span>{this.props.track.name}</span> - ( Track #{this.props.track.meta.track_number} )
                     </div>
-                    <div className="search-result-detail-artist--content" onScroll={this.handleScroll} onWheel={this.handleScroll} >         
+                    <div className="search-result-detail-artist--content" >         
                         <h2>{this.props.track.name}</h2>                                
                         <p>Duration: {formattedDuration}</p>
                         <p>Track Number: {this.props.track.meta.track_number}</p>  
@@ -72,7 +72,9 @@ export default class SpotifyResultDetailTrack extends React.Component<SpotifyRes
         });
     }
 
-
+    /**
+     * When a user clicks an artist, call this.props.showDetail with a new Artist detail pane.  
+     **/
     clickedArtist(event: React.UIEvent) {
         let id = this.props.track.meta.artists[0].id;
         getArtist( id ).then( (artist:SpotifyArtist) => {                           
@@ -81,6 +83,9 @@ export default class SpotifyResultDetailTrack extends React.Component<SpotifyRes
         });
     }
 
+    /**
+     * When a user clicks an album, call this.props.showDetail with a new Album detail pane.  
+     **/
     clickedAlbum() {
         getAlbum( this.props.track.parent_id ).then( (res:SpotifyAlbum) => {           
             var detail = <SpotifyResultDetailAlbum album={mapAlbum(res)} showDetail={this.props.showDetail} />;
@@ -88,8 +93,5 @@ export default class SpotifyResultDetailTrack extends React.Component<SpotifyRes
         });
     }
  
-    handleScroll(event: React.MouseEvent<HTMLDivElement>) {
-        event.stopPropagation();
-        return false;
-    }
+
 }

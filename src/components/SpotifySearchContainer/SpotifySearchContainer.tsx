@@ -12,9 +12,9 @@ interface SpotifySearchContainerProps {
   children?: React.ReactNode;
 }
 interface SpotifySearchContainerState {
-    query: string;
-    results?: SpotifyAlbumsArtistsTracks;
-    detail?: JSX.Element;
+    query: string; //most recent query from user input
+    results?: SpotifyAlbumsArtistsTracks; //search results based on user input
+    detail?: JSX.Element; //if the user has drilled in to something, this will be the detail pane for it
 }
 export default class SpotifySearchContainer extends React.Component<SpotifySearchContainerProps, SpotifySearchContainerState> {
 
@@ -48,7 +48,9 @@ export default class SpotifySearchContainer extends React.Component<SpotifySearc
         );
     }
 
-
+    /**
+     * handler for user input, calls the API with our query.
+     **/
     submitQuery( _query: string ) {
         this.closeDetail();
         query( _query, "track,artist,album" ).then( (res:SpotifyAlbumsArtistsTracks) => {
@@ -56,6 +58,9 @@ export default class SpotifySearchContainer extends React.Component<SpotifySearc
         });
     }
 
+    /**
+     * callback function from queryinig the API with user input.
+     **/
     loadedResults( query: string, results: SpotifyAlbumsArtistsTracks ) {
         if( results != null ) {
             this.setState( { query: query, results: results } );
@@ -64,10 +69,17 @@ export default class SpotifySearchContainer extends React.Component<SpotifySearc
         }
     }
     
+    /**
+     * callback function for SearchResults to use to render a new detail pane.
+     **/
     renderDetail( content: JSX.Element ) {
         let detail = <SpotifyResultDetail onClose={this.closeDetail.bind(this)} query={this.state.query}>{content}</SpotifyResultDetail>
         this.setState( { detail: detail  } );
     }
+
+    /**
+     * Remove current detail pane.
+     **/
     closeDetail() {
         this.setState( { detail: undefined } );
     }

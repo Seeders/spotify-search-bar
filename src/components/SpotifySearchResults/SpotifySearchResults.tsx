@@ -43,11 +43,10 @@ export default class SpotifySearchResults extends React.Component<SpotifySearchR
         }
     }
 
-
     render() {       
 
         let artists, albums, tracks: Array<AppData<SpotifyTrack>> = [];
-        if( this.state.results && this.props.query.length > 0 && this.state.results.artists.items.length > 0 ) {
+        if( this.state.results && this.props.query.length > 0 ) {
             artists = mapResultArtistItems( this.state.results );
             albums = mapResultAlbumItems( this.state.results );
             tracks = mapResultTrackItems( this.state.results );               
@@ -68,19 +67,25 @@ export default class SpotifySearchResults extends React.Component<SpotifySearchR
         }
     }
 
+    /**
+     * handler for when a user clicks on an artist.
+     */
     selectArtist( result: AppData<SpotifyArtist> ) {
         var detail = <SpotifyResultDetailArtist artist={result} showDetail={this.props.showDetail} />;
         this.props.showDetail( detail );
     }
-
+    /**
+     * handler for when a user clicks on an album.
+     */
     selectAlbum( result: AppData<SpotifyAlbum> ) {
-        console.log( 'selectAlbum' );
         getAlbum( result.id ? result.id : "" ).then( (res:SpotifyAlbum) => {           
             var detail = <SpotifyResultDetailAlbum album={mapAlbum(res)} showDetail={this.props.showDetail} />;
             this.props.showDetail( detail );
         });
     }
-
+    /**
+     * handler for when a user clicks on a track.
+     */
     selectTrack( result: AppData<SpotifyTrack> ) {
         getTrack( result.id ).then( (res:SpotifyTrack) => {           
             var detail = <SpotifyResultDetailTrack track={mapTrack(res)} showDetail={this.props.showDetail} />;

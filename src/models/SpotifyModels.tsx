@@ -1,11 +1,17 @@
 import { AppData } from "../App";
 
+/**
+ * API Response shape for spotify image
+ */
 export interface SpotifyImage {
     height: number;
     width: number;
     url: string;
 }
 
+/**
+ * common fields in spotify api items
+ */
 export interface SpotifyItem {
     id: string;
     type: string;
@@ -13,7 +19,9 @@ export interface SpotifyItem {
     href: string;
     uri: string;
 }
-
+/**
+ * API Response shape for spotify artist
+ */
 export interface SpotifyArtist extends SpotifyItem {
     followers: {
         total: number
@@ -23,6 +31,9 @@ export interface SpotifyArtist extends SpotifyItem {
     popularity: number;    
 }
 
+/**
+ * API Response shape for spotify album
+ */
 export interface SpotifyAlbum extends SpotifyItem {
     artists: Array<SpotifyItem>
     release_date: string;
@@ -31,6 +42,9 @@ export interface SpotifyAlbum extends SpotifyItem {
     album_type: string;
 }
 
+/**
+ * API Response shape for spotify track
+ */
 export interface SpotifyTrack extends SpotifyItem {
     album: SpotifyAlbum;
     artists: Array<SpotifyItem>;
@@ -47,6 +61,9 @@ export interface SpotifyTrack extends SpotifyItem {
     }
 }
 
+/**
+ * API Response shape for collection of items
+ */
 export interface SpotifyItems<T> {    
     href: string;
     items: Array<T>;
@@ -57,6 +74,9 @@ export interface SpotifyItems<T> {
     total: number;
 }
 
+/**
+ * API Response shape for /query endpoint
+ */
 export interface SpotifyAlbumsArtistsTracks {
     albums: SpotifyItems<SpotifyAlbum>,
     artists: SpotifyItems<SpotifyArtist>,
@@ -64,25 +84,39 @@ export interface SpotifyAlbumsArtistsTracks {
 }
 
 
-
+/**
+ * Make array of App consumable AppData Artists from Query Result SpotifyAlbumsArtistsTracks
+ */
 export function mapResultArtistItems(results : SpotifyAlbumsArtistsTracks) : Array<AppData<SpotifyArtist>> {
     return mapArtists( results.artists && results.artists.items ? results.artists.items : [])
 }
 
+/**
+ * Make array of App consumable AppData Albums from Query Result SpotifyAlbumsArtistsTracks
+ */
 export function mapResultAlbumItems(results : SpotifyAlbumsArtistsTracks) : Array<AppData<SpotifyAlbum>> {
     return mapAlbums( results.albums && results.albums.items ? results.albums.items : [])
 }
 
+/**
+ * Make array of App consumable AppData Tracks from Query Result SpotifyAlbumsArtistsTracks
+ */
 export function mapResultTrackItems(results : SpotifyAlbumsArtistsTracks) : Array<AppData<SpotifyTrack>> {
     return mapTracks( results.tracks && results.tracks.items ? results.tracks.items : [])
 }
 
+/**
+ * Make array of App consumable AppData from SpotifyArtist Array
+ */
 export function mapArtists( items: Array<SpotifyArtist> ) : Array<AppData<SpotifyArtist>> {
     return items.map( (item:SpotifyArtist) => {
         return mapArtist( item );
     });  
 }
 
+/**
+ * Make App consumable AppData from SpotifyArtist
+ */
 export function mapArtist(item:SpotifyArtist) {
     return {
         id: item.id,
@@ -93,13 +127,18 @@ export function mapArtist(item:SpotifyArtist) {
         meta: item
     }
 }
-
+/**
+ * Make array of App consumable AppData from SpotifyAlbums Array
+ */
 export function mapAlbums( items: Array<SpotifyAlbum> ) : Array<AppData<SpotifyAlbum>> {
     return items.map( (item:SpotifyAlbum) => {
         return mapAlbum( item );
     });
 }
 
+/**
+ * Make App consumable AppData from SpotifyAlbum
+ */
 export function mapAlbum( item:SpotifyAlbum ) {
     return {
         id: item.id,
@@ -110,13 +149,18 @@ export function mapAlbum( item:SpotifyAlbum ) {
         meta: item
     }
 }
-
+/**
+ * Make array of App consumable AppData from SpotifyTrack Array
+ */
 export function mapTracks( items: Array<SpotifyTrack>, album?: AppData<SpotifyAlbum> ) : Array<AppData<SpotifyTrack>> {
     return items.map( (item:SpotifyTrack) => {
         return mapTrack( item, album );
     });
 }
 
+/**
+ * Make App consumable AppData from SpotifyTrack
+ */
 export function mapTrack(item:SpotifyTrack, album?: AppData<SpotifyAlbum>) {
     return {
         id: item.id,

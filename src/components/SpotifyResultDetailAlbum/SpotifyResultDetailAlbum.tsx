@@ -12,15 +12,18 @@ require("./SpotifyResultDetailAlbum.css");
 interface SpotifyResultDetailAlbumProps {
   className?: string;
   children?: React.ReactNode;
-  album: AppData<SpotifyAlbum>;
-  showDetail: Function;
+  album: AppData<SpotifyAlbum>; //album data to display details for
+  showDetail: Function; //call this with one of the detail panes to show the pane.
 }
 
 interface SpotifyResultDetailAlbumState {
-    tracks?: Array<AppData<SpotifyTrack>>;
-    album: AppData<SpotifyAlbum>;
+    tracks?: Array<AppData<SpotifyTrack>>; //we load these tracks based on the album from this.props
+    album: AppData<SpotifyAlbum>; //store the album in state in case another album is loaded in this.props, then we will know we need to query tracks again.
 }
 
+/**
+ * Detail Pane to show Album information.
+ **/
 export default class SpotifyResultDetailAlbum extends React.Component<SpotifyResultDetailAlbumProps, SpotifyResultDetailAlbumState> {
 
     mainClass : string = "search-result-detail-album";
@@ -55,7 +58,7 @@ export default class SpotifyResultDetailAlbum extends React.Component<SpotifyRes
                     </div>
                     <div>
                         <h2>Tracks</h2> 
-                        <div className="search-result-detail-album--content" onScroll={this.handleScroll} onWheel={this.handleScroll} >                       
+                        <div className="search-result-detail-album--content">                       
                             <div className="search-result--flex-container">
                                 <ol>
                                 {this.state.tracks.map( ( track: AppData<SpotifyTrack>, index: number ) => {    
@@ -76,12 +79,19 @@ export default class SpotifyResultDetailAlbum extends React.Component<SpotifyRes
         }
     }
 
+    /**
+     * load tracks belonging to this album.
+     **/
     loadData() {
         getTracks( this.props.album.id ).then( ( res: SpotifyItems<SpotifyTrack> ) => {       
             this.setState( { tracks: mapTracks(res.items, this.props.album), album: this.props.album } );
         });
     }
 
+    /**
+     * When a user clicks an artist, call this.props.showDetail with a new Artist detail pane.
+     * We first need to look up the artist data using the artist id from track meta.  
+     **/
     clickedArtist(event: React.UIEvent) {
         let id = this.props.album.meta.artists[0].id;
         getArtist( id ).then( (artist:SpotifyArtist) => {                           
@@ -90,11 +100,17 @@ export default class SpotifyResultDetailAlbum extends React.Component<SpotifyRes
         });
     }
 
+    /**
+     * When a user clicks an album, call this.props.showDetail with a new Album detail pane.  
+     **/
     clickAlbum( album: AppData<SpotifyAlbum> ) {
         var detail = <SpotifyResultDetailAlbum album={album} showDetail={this.props.showDetail} />;
         this.props.showDetail( detail );
     }
 
+    /**
+     * When a user clicks an track, call this.props.showDetail with a new Track detail pane.  
+     **/
     clickedTrack( event: React.UIEvent) {
         let index = parseInt(event.currentTarget.getAttribute( 'data-index' ) as string);
         if( this.state.tracks && this.state.tracks.length > index ) {
@@ -105,10 +121,5 @@ export default class SpotifyResultDetailAlbum extends React.Component<SpotifyRes
                 this.props.showDetail( detail );
             }
         }
-    }
-
-    handleScroll(event: React.MouseEvent<HTMLDivElement>) {
-        event.stopPropagation();
-        return false;
     }
 }
