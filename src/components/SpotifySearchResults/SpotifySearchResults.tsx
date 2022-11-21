@@ -55,11 +55,11 @@ export default class SpotifySearchResults extends React.Component<SpotifySearchR
             return (
                 <div className={getClassName(this.mainClass, this.props.className)}>                    
                     <div>
-                        <h3>Artists</h3>
+                        <h3>Artists - "{this.props.query}"</h3>
                         <SpotifySearchResultSection name="Artists" type="artist" query={this.props.query} results={artists} mapFunction={mapResultArtistItems} onClick={this.selectArtist.bind(this)} className="search-result-section--artists" />
-                        <h3>Albums</h3>
+                        <h3>Albums - "{this.props.query}"</h3>
                         <SpotifySearchResultSection name="Albums" type="album" query={this.props.query} results={albums} mapFunction={mapResultAlbumItems} onClick={this.selectAlbum.bind(this)} className="search-result-section--albums" />
-                        <h3>Tracks</h3>
+                        <h3>Tracks - "{this.props.query}"</h3>
                         <SpotifySearchResultSection name="Tracks" type="track" query={this.props.query} results={tracks} mapFunction={mapResultTrackItems} onClick={this.selectTrack.bind(this)} className="search-result-section--tracks" />
                     </div>
                 </div>
