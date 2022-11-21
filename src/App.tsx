@@ -22,7 +22,7 @@ function App( props: AppProps ) {
   getAccessToken();
 
   document.addEventListener('keydown', ( event: KeyboardEvent) => {
-    if (event.key === 'Enter') {
+    if (event && event.key === 'Enter') {
       event.preventDefault();
       let element = (document.activeElement as HTMLElement);
       if( element.nodeName.toLowerCase() == "a" ) element.click();

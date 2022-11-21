@@ -39,8 +39,8 @@ export default class SpotifyResultDetailTrack extends React.Component<SpotifyRes
             return (
                 <div className={getClassName(this.mainClass, this.props.className)}>
                     <div className="spotify_result-detail--breadcrumb">
-                        <a onClick={this.clickedArtist.bind(this)}>{this.props.track.meta.artists[0].name}</a> - ( Artist )<br /> 
-                        &emsp; <a onClick={this.clickedAlbum.bind(this)}>{this.props.track.meta.album.name}</a> - ( Album )<br /> 
+                        <a tabIndex={0} onClick={this.clickedArtist.bind(this)}>{this.props.track.meta.artists[0].name}</a> - ( Artist )<br /> 
+                        &emsp; <a tabIndex={0} onClick={this.clickedAlbum.bind(this)}>{this.props.track.meta.album.name}</a> - ( Album )<br /> 
                         &emsp;&emsp;&gt; <span>{this.props.track.name}</span> - ( Track #{this.props.track.meta.track_number} )
                     </div>
                     <div className={getClassName(`${this.mainClass}--content`)} >         
