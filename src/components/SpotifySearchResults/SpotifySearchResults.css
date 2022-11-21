@@ -17,3 +17,10 @@
     display: flex;
     flex-direction: column;
 }
+
+
+@media (max-width: 893px) {
+    .spotify_search-results h3 {
+        margin: .5em 0;
+    }
+}

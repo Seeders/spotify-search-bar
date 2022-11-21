@@ -19,3 +19,10 @@ body {
 .App a:hover {
   color: #aaa;
 }
+
+
+@media (max-width: 893px) {
+  .App {        
+      text-align: center;
+  }
+}

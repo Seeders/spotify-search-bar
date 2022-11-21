@@ -33,37 +33,11 @@
 }
 
 @media (max-width: 893px) {
-    .App {        
-        text-align: center;
-    }
-
+ 
     .spotify_search-container {
         display: flex;
         flex-direction: column;
         margin: 0 auto;
-    }
-
-    .spotify_result-detail > div {
-        min-height: 100%;
-    }
-
-    .spotify_result-detail > button {
-        display: block;
-    }
-    .spotify_result-detail .spotify_result--flex-container {
-        width: auto;
-        justify-content: center;
-    }
-
-    .spotify_search-result  {
-        margin: .25em;
-    }
-    .spotify_search-results h3 {
-        margin: .5em 0;
-    }
-
-    .spotify_search-result-section--next, .spotify_search-result-section--previous {
-        height: calc(100% - .25em);
     }
 
     .spotify_search-container-detail-container {

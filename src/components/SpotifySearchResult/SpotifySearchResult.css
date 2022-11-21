@@ -49,3 +49,14 @@
     height: 128px;
     border-radius: 64px;
 }
+
+.spotify_search-result > img[src=""] {
+    display: none;
+}
+
+@media (max-width: 893px) {
+    .spotify_search-result  {
+        margin: .25em;
+    }
+}
+
