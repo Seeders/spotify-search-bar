@@ -14,9 +14,11 @@ export default class SpotifySearchBar extends React.Component<SpotifySearchBarPr
     changeIntentDelay:number = 100;
 
     render() {
+        let query = localStorage.getItem( 'spotify_last-query' );
+
         return (
             <div className={getClassName(this.mainClass, this.props.className)}>
-                <input type="text" autoFocus className={getClassName(`${this.mainClass}_text-input`)} placeholder="What do you want to listen to?" onChange={this.handleChange.bind(this)} />            
+                <input value={query ? query : ""} type="text" autoFocus className={getClassName(`${this.mainClass}_text-input`)} placeholder="What do you want to listen to?" onFocus={this.handleChange.bind(this)} onChange={this.handleChange.bind(this)} />            
             </div>
         );
     }
@@ -25,10 +27,6 @@ export default class SpotifySearchBar extends React.Component<SpotifySearchBarPr
      * handle user input in search box.
      **/
     handleChange( event: React.ChangeEvent<HTMLInputElement>) {   
-        this.props.submitCallback( event.target.value );      
-        //changeIntent(, this.doChange.bind(this), this.changeIntentDelay );        
+        this.props.submitCallback( event.target.value );           
     }
-
-    // doChange( value: string ) {
-    // }
 }

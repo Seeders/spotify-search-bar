@@ -22,14 +22,13 @@ export default class SpotifySearchContainer extends React.Component<SpotifySearc
     state: SpotifySearchContainerState;
 
     constructor( props: SpotifySearchContainerProps ) {
-      super(props); 
-  
-      this.state = {
-        query: "",
-        results: undefined,
-        detail: undefined
-      };
-  
+        super(props); 
+        let query = localStorage.getItem( 'spotify_last-query' );
+        this.state = {
+            query: query ? query : "",
+            results: undefined,
+            detail: undefined
+        };  
     }
 
     render() {
@@ -53,6 +52,7 @@ export default class SpotifySearchContainer extends React.Component<SpotifySearc
      **/
     submitQuery( _query: string ) {
         this.closeDetail();
+        localStorage.setItem( 'spotify_last-query', _query );
         query( _query, "track,artist,album" ).then( (res:SpotifyAlbumsArtistsTracks) => {
             this.loadedResults( _query, res );
         });
