@@ -5,7 +5,10 @@
     flex-direction: column;
     padding: 0 1em 1em;
 }
-
+.spotify_result-detail--breadcrumb {
+    text-align: left;
+    margin: 0 0 0 1em;
+}
 .spotify_result-detail .spotify_search-result {    
     margin: 0 .25em .5em;
 }
@@ -39,6 +42,6 @@
     display: none;
 }
 
-.spotify_result-detail .search-result--flex-container {
+.spotify_result-detail .spotify_result--flex-container {
     width: auto;
 }

@@ -38,7 +38,7 @@ export default class SpotifyResultDetailArtist extends React.Component<SpotifyRe
         if( this.state.artist == this.props.artist && this.state.albums ) {
             return (
                 <div className={getClassName(this.mainClass, this.props.className)}>
-                    <div className="search-result-detail-breadcrumb">
+                    <div className="spotify_result-detail--breadcrumb">
                         <span>{this.props.artist.name}</span> - ( Artist )
                     </div>
                     <div>
@@ -47,8 +47,8 @@ export default class SpotifyResultDetailArtist extends React.Component<SpotifyRe
                     </div>
                     <div>
                         <h2>Albums</h2> 
-                        <div className="search-result-detail-artist--content" >                       
-                            <div className="search-result--flex-container">
+                        <div className={getClassName(`${this.mainClass}--content`)} >                       
+                            <div className="spotify_result--flex-container">
                                 {this.state.albums.map( ( result: AppData<SpotifyAlbum> ) => {                 
                                     return (<SpotifySearchResult key={result.id} item={result} onClick={this.clickAlbum.bind(this)} />);
                                 })}  

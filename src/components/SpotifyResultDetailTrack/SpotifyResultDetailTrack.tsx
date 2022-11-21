@@ -38,12 +38,12 @@ export default class SpotifyResultDetailTrack extends React.Component<SpotifyRes
             let formattedDuration = formatDuration( this.props.track.meta.duration_ms );
             return (
                 <div className={getClassName(this.mainClass, this.props.className)}>
-                    <div className="search-result-detail-breadcrumb">
+                    <div className="spotify_result-detail--breadcrumb">
                         <a onClick={this.clickedArtist.bind(this)}>{this.props.track.meta.artists[0].name}</a> - ( Artist )<br /> 
                         &emsp; <a onClick={this.clickedAlbum.bind(this)}>{this.props.track.meta.album.name}</a> - ( Album )<br /> 
                         &emsp;&emsp;&gt; <span>{this.props.track.name}</span> - ( Track #{this.props.track.meta.track_number} )
                     </div>
-                    <div className="search-result-detail-artist--content" >         
+                    <div className={getClassName(`${this.mainClass}--content`)} >         
                         <h2>{this.props.track.name}</h2>                                
                         <p>Duration: {formattedDuration}</p>
                         <p>Track Number: {this.props.track.meta.track_number}</p>  

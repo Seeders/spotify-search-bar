@@ -51,7 +51,7 @@ export default class SpotifySearchResultSection extends React.Component<SpotifyS
         );
         if( this.state.results && this.state.results.length > 0 ) {
             content = (
-                    <div className="search-result--flex-container">
+                    <div className="spotify_result--flex-container">
                         {this.state.results.map( ( result: AppData<any> ) => {            
                             return (<SpotifySearchResult key={result.id} item={result} onClick={this.props.onClick} />);
                         })}  

@@ -1,13 +1,13 @@
-.search-result-detail-album--content .spotify_search-result > div {
+.spotify_search-result-detail-album--content .spotify_search-result > div {
     height: 64px;
 }
 
-.search-result-detail-album--content .search-result--flex-container {
+.spotify_search-result-detail-album--content .spotify_result--flex-container {
     flex-direction: column;
     text-align: left;
 }
 
-.search-result-detail-album--content ol {
+.spotify_search-result-detail-album--content ol {
     margin: 0;
     padding: 0 0 0 2em;
 }

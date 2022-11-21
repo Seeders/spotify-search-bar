@@ -43,7 +43,7 @@ export default class SpotifyResultDetailAlbum extends React.Component<SpotifyRes
         if( this.props.album == this.state.album && this.state.tracks ) {
             return (
                 <div className={getClassName(this.mainClass, this.props.className)}>
-                    <div className="search-result-detail-breadcrumb">
+                    <div className="spotify_result-detail--breadcrumb">
                         <a onClick={this.clickedArtist.bind(this)}>{this.props.album.meta.artists[0].name}</a> - ( Artist )<br />
                         &emsp;&gt; <span>{this.props.album.name}</span> - ( Album )
                     </div>
@@ -58,8 +58,8 @@ export default class SpotifyResultDetailAlbum extends React.Component<SpotifyRes
                     </div>
                     <div>
                         <h2>Tracks</h2> 
-                        <div className="search-result-detail-album--content">                       
-                            <div className="search-result--flex-container">
+                        <div className={getClassName(`${this.mainClass}--content`)}>                       
+                            <div className="spotify_result--flex-container">
                                 <ol>
                                 {this.state.tracks.map( ( track: AppData<SpotifyTrack>, index: number ) => {    
                                     let formattedDuration = formatDuration(track.meta.duration_ms),
