@@ -11,4 +11,14 @@
     display: block;
     width: 40%;
     margin: 1em auto;    
+    background-color: #333;
+    border: 0px;
+    border-radius: 4px;
+    color: #ccc;
+}
+
+.spotify_search-bar > input:focus {
+    outline: none;
+    background-color: #444;
+    color: #fff;
 }

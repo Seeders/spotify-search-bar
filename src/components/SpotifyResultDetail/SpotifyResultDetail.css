@@ -3,24 +3,20 @@
     display: flex;
     position: relative;
     flex-direction: column;
-    padding: 0 0 2em 0;
+    padding: 1em .5em;
 }
 .spotify_result-detail > button {
     color: #222;
     width: 32px;
     height: 32px;
     border-radius: 16px;
-    position: absolute;
-    top: 16px;
-    right: 48px;
+    position: fixed;
+    top: 2em;
+    left: 2em;
     cursor: pointer;
     z-index: 1000;
     display: none;
 }
-.spotify_result-detail > div > div {
-    margin: 0 .5em;   
-}
-
 
 .spotify_result-detail > div h2 {
     margin: 1em auto;

@@ -78,6 +78,7 @@ let generateRandomString = function (length:number) {
 
 export function getAccessToken() {
     
+    var redirect_uri = 'http://localhost:3000/';
     let access_token = localStorage.getItem( 'spotify_access_token' );
     if( access_token ) {
         return access_token;
@@ -89,6 +90,7 @@ export function getAccessToken() {
             if( windowHash[i].indexOf( 'access_token' ) >= 0 ) {
                 access_token = windowHash[i].replace( 'access_token=', '' );
                 localStorage.setItem('spotify_access_token', access_token);
+                window.location.hash = "";
                 return access_token;
             }
         }
@@ -96,7 +98,6 @@ export function getAccessToken() {
     
 
     var client_id = 'c125d728642049e6ac238098f7560681';
-    var redirect_uri = 'http://localhost:3000/';
 
     var state = generateRandomString(16);
 

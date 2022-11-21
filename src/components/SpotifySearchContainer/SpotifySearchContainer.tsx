@@ -38,12 +38,12 @@ export default class SpotifySearchContainer extends React.Component<SpotifySearc
                 <div className="spotify_search-container-search-bar-container">
                     <SpotifySearchBar submitCallback={this.submitQuery.bind(this)} />    
                 </div>
-                <div className="spotify_search-container-search-results-container">
-                    <SpotifySearchResults query={this.state.query} results={this.state.results} showDetail={this.renderDetail.bind(this)} /> 
-                </div>
                 <div className="spotify_search-container-detail-container">
                     {this.state.detail}
-                </div>                      
+                </div> 
+                <div className="spotify_search-container-search-results-container">
+                    <SpotifySearchResults query={this.state.query} results={this.state.results} showDetail={this.renderDetail.bind(this)} /> 
+                </div>                     
             </div>
         );
     }

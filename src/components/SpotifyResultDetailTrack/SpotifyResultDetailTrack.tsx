@@ -38,9 +38,18 @@ export default class SpotifyResultDetailTrack extends React.Component<SpotifyRes
             let formattedDuration = formatDuration( this.props.track.meta.duration_ms );
             return (
                 <div className={getClassName(this.mainClass, this.props.className)}>
+                    <div className="search-result-detail-breadcrumb">
+                        <a>{this.props.track.meta.artists[0].name}</a><br /> 
+                        &emsp;&gt; <a>{this.props.track.meta.album.name}</a>
+                    </div>
+                    <div className="search-result-detail-artist--content" onScroll={this.handleScroll} onWheel={this.handleScroll} >         
+                        <h2>{this.props.track.name}</h2>                                
+                        <div>Duration: {formattedDuration}</div>
+                        <div>Track Number: {this.props.track.meta.track_number}</div>                        
+                    </div>  
                     <div>
                         <div>
-                            <h2 onClick={this.clickedAlbum.bind(this)}>{this.props.track.meta.album.name} (Album)</h2>
+                            <h3 onClick={this.clickedAlbum.bind(this)}>{this.props.track.meta.album.name}</h3>
                             <img className="spotify_result-detail--image" src={this.props.track.meta.album.images[0].url} onClick={this.clickedAlbum.bind(this)} /> 
                         </div>
                         <div>
@@ -51,12 +60,7 @@ export default class SpotifyResultDetailTrack extends React.Component<SpotifyRes
                             <h3>Artist</h3>
                             <a onClick={this.clickedArtist.bind(this)}>{this.props.track.meta.artists[0].name}</a>
                         </div>
-                    </div> 
-                    <div className="search-result-detail-artist--content" onScroll={this.handleScroll} onWheel={this.handleScroll} >         
-                        <h2>{this.props.track.name} (Song)</h2>                                
-                        <div>Duration: {formattedDuration}</div>
-                        <div>Track Number: {this.props.track.meta.track_number}</div>                        
-                    </div>                       
+                    </div>                      
                 </div>
             );
         } else {

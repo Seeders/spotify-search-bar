@@ -22,7 +22,7 @@ export default class SpotifySearchResult extends React.Component<SpotifySearchRe
         return (
             <div onClick={this.onClick.bind(this)} className={getClassName(this.mainClass, this.props.className)}>
                 <div>
-                    <span>{this.props.result.name}</span>
+                    <a>{this.props.result.name}</a>
                 </div>
                 <img src={this.props.result.image} />             
             </div>

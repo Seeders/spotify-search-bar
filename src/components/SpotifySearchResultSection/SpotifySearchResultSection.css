@@ -13,6 +13,7 @@
     font-weight: bold;
     background-color: #161616;
     border: none;
+    text-decoration: underline;
 }
 
 .spotify_search-result-section--next:hover, .spotify_search-result-section--previous:hover {

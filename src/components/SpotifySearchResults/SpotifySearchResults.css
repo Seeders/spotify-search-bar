@@ -3,6 +3,11 @@
     display: flex;
     flex-wrap: wrap;
     margin: 0 auto;
-    justify-content: space-evenly;
+    justify-content: center;
     align-content: space-between;
+    padding: 0 0.5em;
+}
+
+.spotify_search-results h3 {
+    text-align: left;
 }

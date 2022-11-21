@@ -1,3 +1,7 @@
 .spotify_search-result-detail-track img {
     cursor: pointer;
 }
+
+.search-result-detail-breadcrumb {
+    text-align: left;
+}
