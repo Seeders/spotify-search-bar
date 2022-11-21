@@ -44,4 +44,6 @@
 
 .spotify_result-detail .spotify_result--flex-container {
     width: auto;
+    justify-content: flex-start;
+    padding: 0;
 }
