@@ -1,13 +1,17 @@
 
-.spotify_result-detail > div {
+.spotify_result-detail-content {
     display: flex;
     position: relative;
     flex-direction: column;
-    padding: 1em;
+    padding: 0 1em 1em;
 }
 
 .spotify_result-detail .spotify_search-result {    
     margin: 0 .25em .5em;
+}
+.spotify_result-detail-query {
+    text-align: left;
+    margin: 1em 0 0 1em;
 }
 
 .spotify_result-detail > button {

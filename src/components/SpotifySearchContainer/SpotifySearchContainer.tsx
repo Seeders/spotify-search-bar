@@ -50,6 +50,7 @@ export default class SpotifySearchContainer extends React.Component<SpotifySearc
 
 
     submitQuery( _query: string ) {
+        this.closeDetail();
         query( _query, "track,artist,album" ).then( (res:SpotifyAlbumsArtistsTracks) => {
             this.loadedResults( _query, res );
         });
@@ -64,7 +65,7 @@ export default class SpotifySearchContainer extends React.Component<SpotifySearc
     }
     
     renderDetail( content: JSX.Element ) {
-        let detail = <SpotifyResultDetail onClose={this.closeDetail.bind(this)}>{content}</SpotifyResultDetail>
+        let detail = <SpotifyResultDetail onClose={this.closeDetail.bind(this)} query={this.state.query}>{content}</SpotifyResultDetail>
         this.setState( { detail: detail  } );
     }
     closeDetail() {

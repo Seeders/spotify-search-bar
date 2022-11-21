@@ -38,6 +38,9 @@ export default class SpotifyResultDetailArtist extends React.Component<SpotifyRe
         if( this.state.artist == this.props.artist && this.state.albums ) {
             return (
                 <div className={getClassName(this.mainClass, this.props.className)}>
+                    <div className="search-result-detail-breadcrumb">
+                        <span>{this.props.artist.name}</span> - ( Artist )
+                    </div>
                     <div>
                         <h2>{this.props.artist.name}</h2>
                         <img className="spotify_result-detail--image" src={this.props.artist.image} />                     

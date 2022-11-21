@@ -41,7 +41,8 @@ export default class SpotifyResultDetailAlbum extends React.Component<SpotifyRes
             return (
                 <div className={getClassName(this.mainClass, this.props.className)}>
                     <div className="search-result-detail-breadcrumb">
-                        <a onClick={this.clickedArtist.bind(this)}>{this.props.album.meta.artists[0].name}</a><br /> 
+                        <a onClick={this.clickedArtist.bind(this)}>{this.props.album.meta.artists[0].name}</a> - ( Artist )<br />
+                        &emsp;&gt; <span>{this.props.album.name}</span> - ( Album )
                     </div>
                     <div>
                         <h2>{this.props.album.name}</h2>
@@ -49,10 +50,6 @@ export default class SpotifyResultDetailAlbum extends React.Component<SpotifyRes
                         <div>
                             <h3>Album Released</h3>
                             {this.props.album.meta.release_date}
-                        </div>
-                        <div>
-                            <h3>Artist</h3>
-                            <a onClick={this.clickedArtist.bind(this)}>{this.props.album.meta.artists[0].name}</a>
                         </div>
                     </div>
                     <div>

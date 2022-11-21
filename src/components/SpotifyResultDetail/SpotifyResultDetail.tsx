@@ -7,7 +7,8 @@ require("./SpotifyResultDetail.css");
 interface SpotifyResultDetailProps {
   className?: string;
   children?: React.ReactNode;
-  onClose: React.MouseEventHandler<HTMLButtonElement>;
+  onClose: React.MouseEventHandler<HTMLAnchorElement>;
+  query: string;
 }
 
 interface SpotifyResultDetailState {}
@@ -20,8 +21,8 @@ export default class SpotifyResultDetail extends React.Component<SpotifyResultDe
         window.scrollTo({ top: 0 });
         return (
             <div className={getClassName(this.mainClass, this.props.className)}>                
-                <button onClick={this.props.onClose}>&lt;</button>
-                {this.props.children}
+                <div className={getClassName(`${this.mainClass}-query`)}><a onClick={this.props.onClose}>"{this.props.query}"</a> - ( Searched )</div>
+                <div className={getClassName(`${this.mainClass}-content`)}>{this.props.children}</div>
             </div>
         );
     }
