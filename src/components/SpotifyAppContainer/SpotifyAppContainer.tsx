@@ -65,7 +65,7 @@ export default class SpotifyAppContainer extends React.Component<SpotifyAppConta
                 name: 'Artists',
                 type: 'artist',
                 query: this.state.query,
-                mapFunction: mapArtists,
+                mapFunction: mapResultArtistItems,
                 results: mapResultArtistItems(this.state.results),
                 onClick: this.selectArtist.bind(this)
             },
@@ -73,7 +73,7 @@ export default class SpotifyAppContainer extends React.Component<SpotifyAppConta
                 name: 'Albums',
                 type: 'album',
                 query: this.state.query,
-                mapFunction: mapAlbums,
+                mapFunction: mapResultAlbumItems,
                 results: mapResultAlbumItems(this.state.results),
                 onClick: this.selectAlbum.bind(this)
             },
@@ -81,7 +81,7 @@ export default class SpotifyAppContainer extends React.Component<SpotifyAppConta
                 name: 'Tracks',
                 type: 'track',
                 query: this.state.query,
-                mapFunction: mapTracks,
+                mapFunction: mapResultTrackItems,
                 results: mapResultTrackItems(this.state.results),
                 onClick: this.selectTrack.bind(this)
             }];

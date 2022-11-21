@@ -42,12 +42,12 @@ export default class SpotifySearchResults extends React.Component<SpotifySearchR
             return (
                 <div className={getClassName(this.mainClass, this.props.className)}>                    
                     <div>
-                        {this.state.sections.map( ( section: SpotifySearchResultSectionProps ) => {            
+                        {this.state.sections.map( ( section: SpotifySearchResultSectionProps, index: number ) => {            
                             return (
-                                <>
-                                <h3>{section.name} - "{this.props.query}"</h3>
-                                <SpotifySearchResultSection name={section.name} type={section.type} query={this.props.query} results={section.results} mapFunction={section.mapFunction} onClick={section.onClick} className={`search-result-section--${section.name.toLowerCase()}`} />
-                                </>
+                                <div key={index}>
+                                    <h3>{section.name} - "{this.props.query}"</h3>
+                                    <SpotifySearchResultSection name={section.name} type={section.type} query={this.props.query} results={section.results} mapFunction={section.mapFunction} onClick={section.onClick} className={`search-result-section--${section.name.toLowerCase()}`} />
+                                </div>
                             );
                         })}  
                     </div>
