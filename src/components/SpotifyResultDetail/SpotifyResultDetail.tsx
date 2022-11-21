@@ -19,7 +19,7 @@ export default class SpotifyResultDetail extends React.Component<SpotifyResultDe
     render() {
         return (
             <div className={getClassName(this.mainClass, this.props.className)}>                
-                <button onClick={this.props.onClose}>X</button> 
+                <button onClick={this.props.onClose}>X</button>
                 {this.props.children}
             </div>
         );

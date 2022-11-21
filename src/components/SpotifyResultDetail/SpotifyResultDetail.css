@@ -1,57 +1,29 @@
 
-.spotify_result-detail {
-    position: fixed; 
-    z-index: 1000;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background-color: rgba(5,5,5,.8);  
-    color: #eee;
-}
-
-.spotify_result-detail > button {
-    position: absolute;
-    top: 1em;
-    right: 1em;
-    z-index: 1000;
-    background-color: #ddd;
-    border-radius: 50%;
-    width: 48px;
-    height: 48px;
-    color: #333;
-    cursor: pointer;
-}
-
 .spotify_result-detail > div {
     display: flex;
-    background-color: #222;
-    border-radius: 32px;
-    margin: auto;
-    height: 100%;
-    padding: 1em;
     position: relative;
-    justify-content: space-between;
-    overflow-y: scroll;
-    overflow-x: hidden;
-    scrollbar-width: none;  
+    flex-direction: column;
+    padding: 0 0 2em 0;
 }
-
+.spotify_result-detail > button {
+    color: #222;
+    width: 32px;
+    height: 32px;
+    border-radius: 16px;
+    position: absolute;
+    top: 16px;
+    right: 48px;
+    cursor: pointer;
+    z-index: 1000;
+    display: none;
+}
 .spotify_result-detail > div > div {
-    margin: 0 .5em;  
-    width: calc(100% - 256px);  
+    margin: 0 .5em;   
 }
 
-.spotify_result-detail > div > div:first-child {
-    width: 256px;
-}
 
 .spotify_result-detail > div h2 {
-    background-color: rgba(0, 0, 0, .6);
-    color: #eee;
-    border-radius: 16px;
     margin: 1em auto;
-    padding: .25em 0;
 }
 
 .spotify_result-detail--image {
@@ -64,8 +36,4 @@
 
 .spotify_result-detail .search-result--flex-container {
     width: auto;
-}
-
-.spotify_result-detail .spotify_search-result:nth-child(5n) {
-    margin-right: 1em;
 }

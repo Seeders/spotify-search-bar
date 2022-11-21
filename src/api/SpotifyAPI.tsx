@@ -12,13 +12,16 @@ function doAPIRequest(url:string) {
                 'Content-Type': 'application/json',
                 'Authorization': 'Bearer ' + token
             }
-        }).then( ( response ) => response.json() )
-            .then( ( response ) => {                      
-                return response;
-            },
-            (error) => {
-                console.error( error );    
-            });      
+        }).then( ( response ) => {
+            if( response.ok ) {
+                return response.json();
+            } else {
+                localStorage.removeItem( "spotify_access_token");
+                getAccessToken();   
+            }
+         } ).then( response => {                      
+            return response;
+        });      
 }
  
 

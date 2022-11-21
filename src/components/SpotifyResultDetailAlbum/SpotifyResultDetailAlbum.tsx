@@ -1,8 +1,10 @@
 import * as React from "react";
 import getClassName from "../../utils/GetClassName";
 import { AppData } from "../../App";
-import { SpotifyItems, SpotifyAlbum, mapTracks, SpotifyTrack } from "../../models/SpotifyModels";
-import { getTracks } from "../../api/SpotifyAPI";
+import { SpotifyItems, SpotifyAlbum, SpotifyArtist, mapTracks, SpotifyTrack, mapArtist } from "../../models/SpotifyModels";
+import SpotifyResultDetailTrack from "../SpotifyResultDetailTrack/SpotifyResultDetailTrack";
+import SpotifyResultDetailArtist from "../SpotifyResultDetailArtist/SpotifyResultDetailArtist";
+import { getArtist, getTracks } from "../../api/SpotifyAPI";
 import { formatDuration } from "../../utils/Time";
 
 require("./SpotifyResultDetailAlbum.css");
@@ -11,10 +13,12 @@ interface SpotifyResultDetailAlbumProps {
   className?: string;
   children?: React.ReactNode;
   album: AppData<SpotifyAlbum>;
+  showDetail: Function;
 }
 
 interface SpotifyResultDetailAlbumState {
-    tracks?: Array<AppData<SpotifyTrack>>
+    tracks?: Array<AppData<SpotifyTrack>>;
+    album: AppData<SpotifyAlbum>;
 }
 
 export default class SpotifyResultDetailAlbum extends React.Component<SpotifyResultDetailAlbumProps, SpotifyResultDetailAlbumState> {
@@ -25,14 +29,15 @@ export default class SpotifyResultDetailAlbum extends React.Component<SpotifyRes
         super(props); 
     
         this.state = {
-            tracks: undefined
+            tracks: undefined,
+            album: this.props.album
         };
     
       }
   
     render() {
 
-        if( this.state.tracks ) {
+        if( this.props.album == this.state.album && this.state.tracks ) {
             return (
                 <div className={getClassName(this.mainClass, this.props.className)}>
                     <div>
@@ -42,17 +47,21 @@ export default class SpotifyResultDetailAlbum extends React.Component<SpotifyRes
                             <h3>Album Released</h3>
                             {this.props.album.meta.release_date}
                         </div>
+                        <div>
+                            <h3>Artist</h3>
+                            <a onClick={this.clickedArtist.bind(this)}>{this.props.album.meta.artists[0].name}</a>
+                        </div>
                     </div>
                     <div>
                         <h2>Tracks</h2> 
                         <div className="search-result-detail-album--content" onScroll={this.handleScroll} onWheel={this.handleScroll} >                       
                             <div className="search-result--flex-container">
                                 <ol>
-                                {this.state.tracks.map( ( result: AppData<SpotifyTrack> ) => {    
-                                    let formattedDuration = formatDuration(result.meta.duration_ms),
-                                        display = `${result.name} - ( ${formattedDuration} )`;   
+                                {this.state.tracks.map( ( track: AppData<SpotifyTrack>, index: number ) => {    
+                                    let formattedDuration = formatDuration(track.meta.duration_ms),
+                                        display = `${track.name} - ( ${formattedDuration} )`;   
                                     return (
-                                        <li>{display}</li>
+                                        <li key={track.id}><a onClick={this.clickedTrack.bind(this)} data-index={index}>{display}</a></li>
                                     );
                                 })} 
                                 </ol> 
@@ -68,12 +77,33 @@ export default class SpotifyResultDetailAlbum extends React.Component<SpotifyRes
 
     loadData() {
         getTracks( this.props.album.id ).then( ( res: SpotifyItems<SpotifyTrack> ) => {       
-            this.setState( { tracks: mapTracks(res.items, this.props.album) } );
+            this.setState( { tracks: mapTracks(res.items, this.props.album), album: this.props.album } );
         });
     }
 
-    clickAlbum() {
-        return false;
+    clickedArtist(event: React.UIEvent) {
+        let id = this.props.album.meta.artists[0].id;
+        getArtist( id ).then( (artist:SpotifyArtist) => {                           
+            var detail = <SpotifyResultDetailArtist artist={mapArtist(artist)} showDetail={this.props.showDetail} />;
+            this.props.showDetail( detail );
+        });
+    }
+
+    clickAlbum( album: AppData<SpotifyAlbum> ) {
+        var detail = <SpotifyResultDetailAlbum album={album} showDetail={this.props.showDetail} />;
+        this.props.showDetail( detail );
+    }
+
+    clickedTrack( event: React.UIEvent) {
+        let index = parseInt(event.currentTarget.getAttribute( 'data-index' ) as string);
+        if( this.state.tracks && this.state.tracks.length > index ) {
+            let track = this.state.tracks[index];
+            if( track ) {
+                track.meta.album = this.props.album.meta;
+                var detail = <SpotifyResultDetailTrack track={track} showDetail={this.props.showDetail} />;
+                this.props.showDetail( detail );
+            }
+        }
     }
 
     handleScroll(event: React.MouseEvent<HTMLDivElement>) {

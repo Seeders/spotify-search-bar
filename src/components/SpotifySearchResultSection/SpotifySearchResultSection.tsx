@@ -47,8 +47,7 @@ export default class SpotifySearchResultSection extends React.Component<SpotifyS
                     <div>
                         <button onClick={this.previousPage.bind(this)} className={getClassName(`${this.mainClass}--previous`)}>&lt;</button>  
                     </div>
-                    <div>
-                        <h6>{this.props.name}</h6>            
+                    <div>        
                         <div className="search-result--flex-container">
                             {this.state.results.map( ( result: AppData<any> ) => {            
                                 return (<SpotifySearchResult key={result.id} result={result} onClick={this.props.onClick} />);

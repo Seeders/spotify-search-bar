@@ -54,10 +54,12 @@ export default class SpotifySearchResults extends React.Component<SpotifySearchR
             tracks = mapResultTrackItems( this.state.results );               
             return (
                 <div className={getClassName(this.mainClass, this.props.className)}>                    
-                    <h2>"{this.props.query}" Results</h2> 
                     <div>
+                        <h3>Artists</h3>
                         <SpotifySearchResultSection name="Artists" type="artist" query={this.props.query} results={artists} mapFunction={mapResultArtistItems} onClick={this.selectArtist.bind(this)} className="search-result-section--artists" />
+                        <h3>Albums</h3>
                         <SpotifySearchResultSection name="Albums" type="album" query={this.props.query} results={albums} mapFunction={mapResultAlbumItems} onClick={this.selectAlbum.bind(this)} className="search-result-section--albums" />
+                        <h3>Tracks</h3>
                         <SpotifySearchResultSection name="Tracks" type="track" query={this.props.query} results={tracks} mapFunction={mapResultTrackItems} onClick={this.selectTrack.bind(this)} className="search-result-section--tracks" />
                     </div>
                 </div>
@@ -68,23 +70,21 @@ export default class SpotifySearchResults extends React.Component<SpotifySearchR
     }
 
     selectArtist( result: AppData<SpotifyArtist> ) {
-        var detail = <SpotifyResultDetailArtist artist={result} />;
-       // this.setState( { detail: detail } );
+        var detail = <SpotifyResultDetailArtist artist={result} showDetail={this.props.showDetail} />;
         this.props.showDetail( detail );
     }
 
     selectAlbum( result: AppData<SpotifyAlbum> ) {
+        console.log( 'selectAlbum' );
         getAlbum( result.id ? result.id : "" ).then( (res:SpotifyAlbum) => {           
-            var detail = <SpotifyResultDetailAlbum album={mapAlbum(res)} />;
-           // this.setState( { detail: detail } );
+            var detail = <SpotifyResultDetailAlbum album={mapAlbum(res)} showDetail={this.props.showDetail} />;
             this.props.showDetail( detail );
         });
     }
 
     selectTrack( result: AppData<SpotifyTrack> ) {
         getTrack( result.id ).then( (res:SpotifyTrack) => {           
-            var detail = <SpotifyResultDetailTrack track={mapTrack(res)} />;
-            //this.setState( { detail: detail } );
+            var detail = <SpotifyResultDetailTrack track={mapTrack(res)} showDetail={this.props.showDetail} />;
             this.props.showDetail( detail );
         });
     }

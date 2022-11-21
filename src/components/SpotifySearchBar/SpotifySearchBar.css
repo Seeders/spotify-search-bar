@@ -1,0 +1,14 @@
+.spotify_search-bar {
+    font-size: 1em;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.spotify_search-bar > input {    
+    padding: 1em;
+    display: block;
+    width: 40%;
+    margin: 1em auto;    
+}

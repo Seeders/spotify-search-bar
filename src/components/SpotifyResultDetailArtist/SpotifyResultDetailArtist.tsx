@@ -2,6 +2,7 @@ import * as React from "react";
 import getClassName from "../../utils/GetClassName";
 import { AppData } from "../../App";
 import { SpotifyItems, SpotifyAlbum, SpotifyArtist, mapAlbums } from "../../models/SpotifyModels";
+import SpotifyResultDetailAlbum from "../SpotifyResultDetailAlbum/SpotifyResultDetailAlbum";
 import { getAlbums } from "../../api/SpotifyAPI";
 import SpotifySearchResult from "../SpotifySearchResult/SpotifySearchResult";
 
@@ -11,10 +12,12 @@ interface SpotifyResultDetailArtistProps {
   className?: string;
   children?: React.ReactNode;
   artist: AppData<SpotifyArtist>;
+  showDetail: Function;
 }
 
 interface SpotifyResultDetailArtistState {
     albums?: Array<AppData<SpotifyAlbum>>
+    artist: AppData<SpotifyArtist>;
 }
 
 export default class SpotifyResultDetailArtist extends React.Component<SpotifyResultDetailArtistProps, SpotifyResultDetailArtistState> {
@@ -25,14 +28,14 @@ export default class SpotifyResultDetailArtist extends React.Component<SpotifyRe
         super(props); 
     
         this.state = {
-            albums: undefined
+            albums: undefined,
+            artist: this.props.artist
         };
     
     }
-  
-    render() {
 
-        if( this.state.albums ) {
+    render() {
+        if( this.state.artist == this.props.artist && this.state.albums ) {
             return (
                 <div className={getClassName(this.mainClass, this.props.className)}>
                     <div>
@@ -57,16 +60,15 @@ export default class SpotifyResultDetailArtist extends React.Component<SpotifyRe
     }
 
     loadAlbums() {
-        getAlbums( this.props.artist.id ).then( ( res: SpotifyItems<SpotifyAlbum> ) => {            
-            this.setState( { albums: mapAlbums(res.items) } );
+        getAlbums( this.props.artist.id ).then( ( res: SpotifyItems<SpotifyAlbum> ) => {        
+            this.setState( { albums: mapAlbums(res.items), artist: this.props.artist } );
         });
     }
 
-
-    clickAlbum() {
-        return false;
+    clickAlbum( album: AppData<SpotifyAlbum> ) {
+        var detail = <SpotifyResultDetailAlbum album={album} showDetail={this.props.showDetail} />;
+        this.props.showDetail( detail );
     }
-
     handleScroll(event: React.MouseEvent<HTMLDivElement>) {
         event.stopPropagation();
         return false;
