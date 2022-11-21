@@ -14,6 +14,7 @@ body {
   color: #a33;
   cursor: pointer;
   text-decoration: none;
+  line-height: 1.2em;
 }
 
 .App a:hover {
