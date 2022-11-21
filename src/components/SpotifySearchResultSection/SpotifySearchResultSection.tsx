@@ -6,7 +6,7 @@ import { AppData } from "../../App";
 import getClassName from "../../utils/GetClassName";
 require("./SpotifySearchResultSection.css");
 
-interface SpotifySearchResultSectionProps {
+export interface SpotifySearchResultSectionProps {
   className?: string;
   children?: React.ReactNode;
   name: string; // Artist/Album/Track

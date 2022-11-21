@@ -1,10 +1,15 @@
 import * as React from "react";
 import SpotifySearchBar from "../SpotifySearchBar/SpotifySearchBar";
 import SpotifySearchResults from "../SpotifySearchResults/SpotifySearchResults";
-import { SpotifyAlbumsArtistsTracks } from "../../models/SpotifyModels";
+import { AppData } from "../../App";
+import { mapAlbums, mapArtists, mapTracks, mapAlbum, mapTrack, mapResultArtistItems, mapResultAlbumItems, mapResultTrackItems, SpotifyAlbumsArtistsTracks, SpotifyTrack, SpotifyAlbum, SpotifyArtist } from "../../models/SpotifyModels";
 import SpotifyResultDetail from "../SpotifyResultDetail/SpotifyResultDetail";
-import { query } from "../../api/SpotifyAPI";
+import { SpotifySearchResultSectionProps } from "../SpotifySearchResultSection/SpotifySearchResultSection";
+import { query, getAlbum, getTrack } from "../../api/SpotifyAPI";
 import getClassName from "../../utils/GetClassName";
+import SpotifyResultDetailArtist from "../SpotifyResultDetailArtist/SpotifyResultDetailArtist";
+import SpotifyResultDetailAlbum from "../SpotifyResultDetailAlbum/SpotifyResultDetailAlbum";
+import SpotifyResultDetailTrack from "../SpotifyResultDetailTrack/SpotifyResultDetailTrack";
 
 require("./SpotifySearchContainer.css");
 
@@ -48,11 +53,70 @@ export default class SpotifySearchContainer extends React.Component<SpotifySearc
                     {this.state.detail}
                 </div> 
                 <div className="spotify_search-container-search-results-container">
-                    <SpotifySearchResults query={this.state.query} results={this.state.results} showDetail={this.renderDetail.bind(this)} /> 
+                    <SpotifySearchResults query={this.state.query} sections={this.getSections()} /> 
                 </div>                     
             </div>
         );
     }
+
+    getSections() : Array<SpotifySearchResultSectionProps> {
+        if( this.state.results ) {
+            return [{
+                name: 'Artists',
+                type: 'artist',
+                query: this.state.query,
+                mapFunction: mapArtists,
+                results: mapResultArtistItems(this.state.results),
+                onClick: this.selectArtist.bind(this)
+            },
+            {
+                name: 'Albums',
+                type: 'album',
+                query: this.state.query,
+                mapFunction: mapAlbums,
+                results: mapResultAlbumItems(this.state.results),
+                onClick: this.selectAlbum.bind(this)
+            },
+            {
+                name: 'Tracks',
+                type: 'track',
+                query: this.state.query,
+                mapFunction: mapTracks,
+                results: mapResultTrackItems(this.state.results),
+                onClick: this.selectTrack.bind(this)
+            }];
+        } else {
+            return [];
+        }
+    }
+
+    
+    /**
+     * handler for when a user clicks on an artist.
+     */
+     selectArtist( result: AppData<SpotifyArtist> ) {
+        var detail = <SpotifyResultDetailArtist artist={result} showDetail={this.renderDetail.bind(this)} />;
+        this.renderDetail( detail );
+    }
+    /**
+     * handler for when a user clicks on an album.
+     */
+    selectAlbum( result: AppData<SpotifyAlbum> ) {
+        getAlbum( result.id ? result.id : "" ).then( (res:SpotifyAlbum) => {           
+            var detail = <SpotifyResultDetailAlbum album={mapAlbum(res)} showDetail={this.renderDetail.bind(this)} />;
+            this.renderDetail( detail );
+        });
+    }
+    /**
+     * handler for when a user clicks on a track.
+     */
+    selectTrack( result: AppData<SpotifyTrack> ) {
+        getTrack( result.id ).then( (res:SpotifyTrack) => {           
+            var detail = <SpotifyResultDetailTrack track={mapTrack(res)} showDetail={this.renderDetail.bind(this)} />;
+            this.renderDetail( detail );
+        });
+    }
+
 
     /**
      * handler for user input, calls the API with our query.
