@@ -53,15 +53,19 @@ export default class SpotifySearchContainer extends React.Component<SpotifySearc
     submitQuery( _query: string ) {
         this.closeDetail();
         localStorage.setItem( 'spotify_last-query', _query );
-        query( _query, "track,artist,album" ).then( (res:SpotifyAlbumsArtistsTracks) => {
-            this.loadedResults( _query, res );
-        });
+        if( _query.length > 0 ) {
+            query( _query, "track,artist,album" ).then( (res:SpotifyAlbumsArtistsTracks) => {
+                this.loadedResults( _query, res );
+            });
+        } else {
+            this.loadedResults( _query, null );
+        }
     }
 
     /**
      * callback function from queryinig the API with user input.
      **/
-    loadedResults( query: string, results: SpotifyAlbumsArtistsTracks ) {
+    loadedResults( query: string, results: SpotifyAlbumsArtistsTracks|null ) {
         if( results != null ) {
             this.setState( { query: query, results: results } );
         } else {

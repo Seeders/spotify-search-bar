@@ -12,3 +12,11 @@ export function formatDuration( duration_ms: number ) {
     }
     return `${minutes}:${seconds}`;
 }
+
+export function getSecondsDiff(startDate:Date, endDate:Date) {
+    const msInSecond = 1000;
+  
+    return Math.round(
+      Math.abs(endDate.getTime() - startDate.getTime()) / msInSecond
+    );
+}

@@ -18,6 +18,18 @@ function getEndpoint( path:string, query?:string ) : string {
 function doAPIRequest(url:string) : Promise<any> {
     let token = getAccessToken();
 
+    let rateLimited = localStorage.getItem( 'spotify_rate-limited' ),
+        rateLimitedTime = localStorage.getItem( 'spotify_rate-limited-time' );
+
+    if( rateLimited && rateLimitedTime ) {
+        console.warn( 'Rate limited!', rateLimited, rateLimitedTime );
+        let dateTime = new Date().getTime();
+        let limitTime = parseInt(rateLimitedTime) + parseInt(rateLimited) * 1000;
+        if( dateTime < limitTime ) {
+            return Promise.reject();
+        }
+    }
+
     if( token ) {
         return fetch(url, {
                 method: 'GET',
@@ -28,6 +40,10 @@ function doAPIRequest(url:string) : Promise<any> {
             }).then( ( response ) => {
                 if( response.ok ) {
                     return response.json();
+                } else if( response.status == 429 ) {
+                    let retryAfterSeconds:number = parseInt(response.headers.get('Retry-After') as string);
+                    localStorage.setItem( 'spotify_rate-limited', retryAfterSeconds.toString() );
+                    localStorage.setItem( 'spotify_rate-limited-time', Date.now.toString() );
                 } else {
                     localStorage.removeItem(ACCESS_TOKEN_KEY);
                     getAccessToken();   
