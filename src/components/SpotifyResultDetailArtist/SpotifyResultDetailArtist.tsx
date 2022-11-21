@@ -90,8 +90,11 @@ export default class SpotifyResultDetailArtist extends React.Component<SpotifyRe
         this.setState( { sortDirection: !this.state.sortDirection, albums: albums } );
     }
 
+    /**
+     * sort albums by release date based on selected sort direction
+     **/
     sortAlbums(albums:Array<AppData<SpotifyAlbum>>, sortDirection: boolean) : Array<AppData<SpotifyAlbum>> {
-        //sort albums by release date
+
         return albums.sort((a, b) => {
             if( sortDirection ) {
                 return parseInt(a.meta.release_date.split("-")[0]) - parseInt(b.meta.release_date.split("-")[0]);
