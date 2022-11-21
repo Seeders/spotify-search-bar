@@ -60,15 +60,13 @@ export default class SpotifyResultDetailAlbum extends React.Component<SpotifyRes
                         <h2>Tracks</h2> 
                         <div className={getClassName(`${this.mainClass}--content`)}>                       
                             <div className="spotify_result--flex-container">
-                                <ol>
                                 {this.state.tracks.map( ( track: AppData<SpotifyTrack>, index: number ) => {    
                                     let formattedDuration = formatDuration(track.meta.duration_ms),
                                         display = `${track.name} - ( ${formattedDuration} )`;   
                                     return (
-                                        <li key={track.id}><a tabIndex={0} onClick={this.clickedTrack.bind(this)} data-index={index}>{display}</a></li>
+                                        <div key={index}>{(index < 9 ? '0' + (index + 1) : index + 1)}. <a tabIndex={0} onClick={this.clickedTrack.bind(this)} data-index={index}>{display}</a></div>
                                     );
                                 })} 
-                                </ol> 
                             </div>         
                         </div> 
                     </div>
