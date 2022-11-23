@@ -187,10 +187,11 @@ export function getAccessToken(): string | null {
  *  Read value from the window.location.hash string
  **/
 function readHash(key:string) : string | null {
-    let windowHash = window.location.hash.substring(1, window.location.hash.length - 1).split( '&' );
+    let windowHash = window.location.hash.substring(1, window.location.hash.length).split( '&' );
     for( let i = 0; i < windowHash.length; i++ ){
-        if( windowHash[i].indexOf( key ) == 0 ) {
-            return windowHash[i].replace( `${key}=`, '' );            
+        let keyVal = windowHash[i].split( '=' );
+        if( keyVal[0] == key && keyVal.length > 1 ) {
+            return keyVal[1];          
         }
     }
     return null;
