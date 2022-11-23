@@ -153,17 +153,18 @@ export function getAccessToken(): string | null {
         return access_token;
     }
 
-    if( window.location.hash.length && window.location.hash.indexOf( 'access_token' ) ) { 
-        let windowHash = window.location.hash.substring(1, window.location.hash.length - 1).split( '&' );
-        for( let i = 0; i < windowHash.length; i++ ){
-            if( windowHash[i].indexOf( 'access_token' ) >= 0 ) {
-                access_token = windowHash[i].replace( 'access_token=', '' );
-                localStorage.setItem( ACCESS_TOKEN_KEY, access_token);
-                window.location.hash = "";
-                return access_token;
-            }
+    if( window.location.hash.length ) { 
+        access_token = readHash( 'access_token' );
+        if( access_token ) {            
+            localStorage.setItem( ACCESS_TOKEN_KEY, access_token);
+            window.location.hash = "";
+            return access_token;
+        } else if( window.location.hash.length && window.location.hash.indexOf( 'error' ) >= 0 ) { 
+            console.error( readHash( 'error' ) );
         }
-    }
+        console.error( 'Failed to authenticate' );
+        return null;
+    }  
     
 
     var client_id = 'c125d728642049e6ac238098f7560681';
@@ -178,5 +179,17 @@ export function getAccessToken(): string | null {
     url += '&redirect_uri=' + encodeURIComponent(redirect_uri);
     url += '&state=' + encodeURIComponent(state);
     window.location.href = url;
+    return null;
+}
+
+function readHash(key:string) : string | null {
+    if( window.location.hash.indexOf( key ) >= 0 ) { 
+        let windowHash = window.location.hash.substring(1, window.location.hash.length - 1).split( '&' );
+        for( let i = 0; i < windowHash.length; i++ ){
+            if( windowHash[i].indexOf( key ) >= 0 ) {
+                return windowHash[i].replace( `${key}=`, '' );            
+            }
+        }
+    }
     return null;
 }
