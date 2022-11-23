@@ -4,7 +4,7 @@ const ACCESS_TOKEN_KEY = "spotify_access_token";
 const REDIRECT_URI = 'http://localhost:3000/';
 const API_URL = 'https://api.spotify.com/v1/';
 const AUTHORIZE_URL = 'https://accounts.spotify.com/authorize';
-
+const CLIENT_ID = 'c125d728642049e6ac238098f7560681';
 /**
  * Build a url using the spotify api endpoint
  * @param path path for request
@@ -168,7 +168,7 @@ export function getAccessToken(): string | null {
     }  
     
 
-    var client_id = 'c125d728642049e6ac238098f7560681';
+    var client_id = CLIENT_ID;
 
     var state = generateRandomString(16);
 
