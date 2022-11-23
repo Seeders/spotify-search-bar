@@ -183,12 +183,10 @@ export function getAccessToken(): string | null {
 }
 
 function readHash(key:string) : string | null {
-    if( window.location.hash.indexOf( key ) >= 0 ) { 
-        let windowHash = window.location.hash.substring(1, window.location.hash.length - 1).split( '&' );
-        for( let i = 0; i < windowHash.length; i++ ){
-            if( windowHash[i].indexOf( key ) >= 0 ) {
-                return windowHash[i].replace( `${key}=`, '' );            
-            }
+    let windowHash = window.location.hash.substring(1, window.location.hash.length - 1).split( '&' );
+    for( let i = 0; i < windowHash.length; i++ ){
+        if( windowHash[i].indexOf( key ) == 0 ) {
+            return windowHash[i].replace( `${key}=`, '' );            
         }
     }
     return null;
