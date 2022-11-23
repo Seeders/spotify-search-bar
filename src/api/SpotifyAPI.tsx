@@ -1,6 +1,9 @@
 import { SpotifyAlbum, SpotifyArtist, SpotifyTrack, SpotifyItems, SpotifyAlbumsArtistsTracks } from "../models/SpotifyModels";
 
 const ACCESS_TOKEN_KEY = "spotify_access_token";
+const REDIRECT_URI = 'http://localhost:3000/';
+const API_URL = 'https://api.spotify.com/v1/';
+const AUTHORIZE_URL = 'https://accounts.spotify.com/authorize';
 
 /**
  * Build a url using the spotify api endpoint
@@ -8,8 +11,7 @@ const ACCESS_TOKEN_KEY = "spotify_access_token";
  * @param query query string params to include
  **/
 function getEndpoint( path:string, query?:string ) : string {
-    var api_url = 'https://api.spotify.com/v1/';
-    return query ? `${api_url}${path}?${query}` : `${api_url}${path}`; 
+    return query ? `${API_URL}${path}?${query}` : `${API_URL}${path}`; 
 }
 
 /**
@@ -147,7 +149,6 @@ let generateRandomString = function (length:number) : string {
  * 
 **/
 export function getAccessToken(): string | null {    
-    var redirect_uri = 'http://localhost:3000/';
     let access_token = localStorage.getItem( ACCESS_TOKEN_KEY );
     if( access_token ) {
         return access_token;
@@ -173,15 +174,18 @@ export function getAccessToken(): string | null {
 
     localStorage.setItem('spotify_state', state);
 
-    var url = 'https://accounts.spotify.com/authorize';
+    var url = AUTHORIZE_URL;
     url += '?response_type=token';
     url += '&client_id=' + encodeURIComponent(client_id);
-    url += '&redirect_uri=' + encodeURIComponent(redirect_uri);
+    url += '&redirect_uri=' + encodeURIComponent(REDIRECT_URI);
     url += '&state=' + encodeURIComponent(state);
     window.location.href = url;
     return null;
 }
 
+/**
+ *  Read value from the window.location.hash string
+ **/
 function readHash(key:string) : string | null {
     let windowHash = window.location.hash.substring(1, window.location.hash.length - 1).split( '&' );
     for( let i = 0; i < windowHash.length; i++ ){
