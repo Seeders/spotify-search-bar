@@ -32,46 +32,37 @@ export default class SpotifyResultDetailTrack extends React.Component<SpotifyRes
         this.state = {
             album: undefined
         };
-    
     }
+
     render() {
 
-        if( this.state.album ) {
-            let formattedDuration = formatDuration( this.props.track.meta.duration_ms );
-            return (
-                <div className={getClassName(this.mainClass, this.props.className)}>
-                    <div className="spotify_result-detail--breadcrumb">
-                        <a tabIndex={0} onClick={this.clickedArtist.bind(this)}>{this.props.track.meta.artists[0].name}</a> - <span className="spotify_text-parenthesis">(Artist)</span><br /> 
-                        &emsp; <a tabIndex={0} onClick={this.clickedAlbum.bind(this)}>{this.props.track.meta.album.name}</a> - <span className="spotify_text-parenthesis">(Album)</span><br /> 
-                        &emsp;&emsp;&gt; <span>{this.props.track.name}</span> - <span className="spotify_text-parenthesis">(Track #{this.props.track.meta.track_number})</span>
-                    </div>
-                    <div className={getClassName(`${this.mainClass}--content`)} >         
-                        <h2>{this.props.track.name}</h2>                                
-                        <p>Duration: {formattedDuration}</p>
-                        <p>Track Number: {this.props.track.meta.track_number}</p>  
-                        <p><a className={getClassName('result-detail--play-button')} href={this.props.track.meta.uri}>Play Now</a></p>                        
-                    </div>  
-                    <div>
-                        <div>
-                            <h3 onClick={this.clickedAlbum.bind(this)}>{this.props.track.meta.album.name}</h3>
-                            <img className={getClassName('result-detail--image')} src={this.props.track.meta.album.images[0].url} onClick={this.clickedAlbum.bind(this)} /> 
-                        </div>
-                        <div>
-                            <h3>Album Released</h3>
-                            {this.props.track.meta.album.release_date}
-                        </div>
-                    </div>                      
+        let formattedDuration = formatDuration( this.props.track.meta.duration_ms );
+        return (
+            <div className={getClassName(this.mainClass, this.props.className)}>
+                <div className="spotify_result-detail--breadcrumb">
+                    <a tabIndex={0} onClick={this.clickedArtist.bind(this)}>{this.props.track.meta.artists[0].name}</a> - <span className="spotify_text-parenthesis">(Artist)</span><br /> 
+                    &emsp; <a tabIndex={0} onClick={this.clickedAlbum.bind(this)}>{this.props.track.meta.album.name}</a> - <span className="spotify_text-parenthesis">(Album)</span><br /> 
+                    &emsp;&emsp;&gt; <span>{this.props.track.name}</span> - <span className="spotify_text-parenthesis">(Track #{this.props.track.meta.track_number})</span>
                 </div>
-            );
-        } else {
-            this.loadAlbums();
-        }
-    }
+                <div className={getClassName(`${this.mainClass}--content`)} >         
+                    <h2>{this.props.track.name}</h2>                                
+                    <p>Duration: {formattedDuration}</p>
+                    <p>Track Number: {this.props.track.meta.track_number}</p>  
+                    <p><a className={getClassName('result-detail--play-button')} href={this.props.track.meta.uri}>Play Now</a></p>                        
+                </div>  
+                <div>
+                    <div>
+                        <h3 onClick={this.clickedAlbum.bind(this)}>{this.props.track.meta.album.name}</h3>
+                        <img className={getClassName('result-detail--image')} src={this.props.track.meta.album.images[0].url} onClick={this.clickedAlbum.bind(this)} /> 
+                    </div>
+                    <div>
+                        <h3>Album Released</h3>
+                        {this.props.track.meta.album.release_date}
+                    </div>
+                </div>                      
+            </div>
+        );    
 
-    loadAlbums() {
-        getAlbum( this.props.track.parent_id ).then( ( res: SpotifyAlbum ) => {            
-            this.setState( { album: mapAlbum(res) } );
-        });
     }
 
     /**

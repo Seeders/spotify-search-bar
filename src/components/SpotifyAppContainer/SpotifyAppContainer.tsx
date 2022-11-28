@@ -107,9 +107,7 @@ export default class SpotifyAppContainer extends React.Component<SpotifyAppConta
      * handler for when a user clicks on an album.
      */
     selectAlbum( result: SpotifyItem ) {
-        console.log( 'selectAlbum', result );
-        getAlbum( result.id ? result.id : "" ).then( (res:SpotifyAlbum) => {           
-            console.log( 'got album', res );
+        getAlbum( result.id ? result.id : "" ).then( (res:SpotifyAlbum) => {     
             this.setState( { albumDetail: mapAlbum(res), artistDetail: undefined, trackDetail: undefined } ); 
         });
     }

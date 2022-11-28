@@ -37,6 +37,9 @@ export default class SpotifyResultDetailArtist extends React.Component<SpotifyRe
         };
     
     }
+    componentDidMount() {
+        this.loadAlbums();
+    }
 
     render() {
         if( this.state.artist == this.props.artist && this.state.albums ) {
@@ -67,7 +70,7 @@ export default class SpotifyResultDetailArtist extends React.Component<SpotifyRe
                 </div>
             );
         } else {
-            this.loadAlbums();
+            return (<div className={getClassName(this.mainClass, this.props.className)}>Loading...</div>);
         }
     }
 
