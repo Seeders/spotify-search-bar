@@ -1,8 +1,6 @@
 import * as React from "react";
 import getClassName from "../../utils/GetClassName";
 import { AppData } from "../../App";
-import SpotifyResultDetailAlbum from "../SpotifyResultDetailAlbum/SpotifyResultDetailAlbum";
-import SpotifyResultDetailArtist from "../SpotifyResultDetailArtist/SpotifyResultDetailArtist";
 import { SpotifyAlbum, SpotifyTrack, SpotifyArtist, mapAlbum, mapArtist } from "../../models/SpotifyModels";
 import { getAlbum, getArtist } from "../../api/SpotifyAPI";
 import { formatDuration } from "../../utils/Time";
@@ -13,7 +11,8 @@ interface SpotifyResultDetailTrackProps {
   className?: string;
   children?: React.ReactNode;
   track: AppData<SpotifyTrack>; //track data to display details for
-  showDetail: Function; //call this with one of the detail panes to show the pane.
+  showAlbumDetail: Function; //call this with one of the detail panes to show the pane.
+  showArtistDetail: Function; //call this with one of the detail panes to show the pane.
 }
 
 interface SpotifyResultDetailTrackState {
@@ -78,22 +77,15 @@ export default class SpotifyResultDetailTrack extends React.Component<SpotifyRes
     /**
      * When a user clicks an artist, call this.props.showDetail with a new Artist detail pane.  
      **/
-    clickedArtist(event: React.UIEvent) {
-        let id = this.props.track.meta.artists[0].id;
-        getArtist( id ).then( (artist:SpotifyArtist) => {                           
-            var detail = <SpotifyResultDetailArtist artist={mapArtist(artist)} showDetail={this.props.showDetail} />;
-            this.props.showDetail( detail );
-        });
+    clickedArtist() {                              
+        this.props.showArtistDetail( this.props.track.meta.artists[0] );
     }
 
     /**
      * When a user clicks an album, call this.props.showDetail with a new Album detail pane.  
      **/
-    clickedAlbum() {
-        getAlbum( this.props.track.parent_id ).then( (res:SpotifyAlbum) => {           
-            var detail = <SpotifyResultDetailAlbum album={mapAlbum(res)} showDetail={this.props.showDetail} />;
-            this.props.showDetail( detail );
-        });
+    clickedAlbum() {               
+        this.props.showAlbumDetail( this.props.track.meta.album );
     }
  
 

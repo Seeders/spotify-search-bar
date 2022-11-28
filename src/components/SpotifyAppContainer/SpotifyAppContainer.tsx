@@ -2,10 +2,10 @@ import * as React from "react";
 import SpotifySearchBar from "../SpotifySearchBar/SpotifySearchBar";
 import SpotifySearchResults from "../SpotifySearchResults/SpotifySearchResults";
 import { AppData } from "../../App";
-import { mapAlbums, mapArtists, mapTracks, mapAlbum, mapTrack, mapResultArtistItems, mapResultAlbumItems, mapResultTrackItems, SpotifyAlbumsArtistsTracks, SpotifyTrack, SpotifyAlbum, SpotifyArtist } from "../../models/SpotifyModels";
+import { mapAlbums, mapArtist, mapTracks, mapAlbum, mapTrack, mapResultArtistItems, mapResultAlbumItems, mapResultTrackItems, SpotifyAlbumsArtistsTracks, SpotifyTrack, SpotifyAlbum, SpotifyArtist, SpotifyItem } from "../../models/SpotifyModels";
 import SpotifyResultDetail from "../SpotifyResultDetail/SpotifyResultDetail";
 import { SpotifySearchResultSectionProps } from "../SpotifySearchResultSection/SpotifySearchResultSection";
-import { query, getAlbum, getTrack } from "../../api/SpotifyAPI";
+import { query, getAlbum, getTrack, getArtist } from "../../api/SpotifyAPI";
 import getClassName from "../../utils/GetClassName";
 import SpotifyResultDetailArtist from "../SpotifyResultDetailArtist/SpotifyResultDetailArtist";
 import SpotifyResultDetailAlbum from "../SpotifyResultDetailAlbum/SpotifyResultDetailAlbum";
@@ -21,7 +21,9 @@ interface SpotifyAppContainerProps {
 interface SpotifyAppContainerState {
     query: string; //most recent query from user input
     results?: SpotifyAlbumsArtistsTracks; //search results based on user input
-    detail?: JSX.Element; //if the user has drilled in to something, this will be the detail pane for it
+    artistDetail?: AppData<SpotifyArtist>; //if the user has drilled in to something, this will be the detail pane for it
+    albumDetail?: AppData<SpotifyAlbum>;
+    trackDetail?: AppData<SpotifyTrack>;
 }
 /**
  * Main UI container that lays out the search bar, search results, and detail panes.
@@ -39,7 +41,9 @@ export default class SpotifyAppContainer extends React.Component<SpotifyAppConta
         this.state = {
             query: query ? query : "",
             results: undefined,
-            detail: undefined
+            artistDetail: undefined,
+            albumDetail: undefined,
+            trackDetail: undefined
         };  
     }
 
@@ -50,7 +54,7 @@ export default class SpotifyAppContainer extends React.Component<SpotifyAppConta
                     <SpotifySearchBar submitCallback={this.submitQuery.bind(this)} />    
                 </div>
                 <div className="spotify_search-container-detail-container">
-                    {this.state.detail}
+                    {this.renderDetail()}
                 </div> 
                 <div className="spotify_search-container-search-results-container">
                     <SpotifySearchResults query={this.state.query} sections={this.getSections()} /> 
@@ -94,26 +98,27 @@ export default class SpotifyAppContainer extends React.Component<SpotifyAppConta
     /**
      * handler for when a user clicks on an artist.
      */
-     selectArtist( result: AppData<SpotifyArtist> ) {
-        var detail = <SpotifyResultDetailArtist artist={result} showDetail={this.renderDetail.bind(this)} />;
-        this.renderDetail( detail );
+     selectArtist( result: SpotifyItem ) {   
+        getArtist( result.id ? result.id : "").then ( (res:SpotifyArtist) => {
+            this.setState( { artistDetail: mapArtist( res ), albumDetail: undefined, trackDetail: undefined } ); 
+        });
     }
     /**
      * handler for when a user clicks on an album.
      */
-    selectAlbum( result: AppData<SpotifyAlbum> ) {
+    selectAlbum( result: SpotifyItem ) {
+        console.log( 'selectAlbum', result );
         getAlbum( result.id ? result.id : "" ).then( (res:SpotifyAlbum) => {           
-            var detail = <SpotifyResultDetailAlbum album={mapAlbum(res)} showDetail={this.renderDetail.bind(this)} />;
-            this.renderDetail( detail );
+            console.log( 'got album', res );
+            this.setState( { albumDetail: mapAlbum(res), artistDetail: undefined, trackDetail: undefined } ); 
         });
     }
     /**
      * handler for when a user clicks on a track.
      */
-    selectTrack( result: AppData<SpotifyTrack> ) {
+    selectTrack( result: SpotifyItem ) {
         getTrack( result.id ).then( (res:SpotifyTrack) => {           
-            var detail = <SpotifyResultDetailTrack track={mapTrack(res)} showDetail={this.renderDetail.bind(this)} />;
-            this.renderDetail( detail );
+            this.setState( { trackDetail: mapTrack(res), albumDetail: undefined, artistDetail: undefined } );
         });
     }
 
@@ -149,15 +154,28 @@ export default class SpotifyAppContainer extends React.Component<SpotifyAppConta
     /**
      * callback function for SearchResults to use to render a new detail pane.
      **/
-    renderDetail( content: JSX.Element ) {
-        let detail = <SpotifyResultDetail onClose={this.closeDetail.bind(this)} query={this.state.query}>{content}</SpotifyResultDetail>
-        this.setState( { detail: detail  } );
+    renderDetail(): JSX.Element {
+        let content: JSX.Element;
+        if( this.state.trackDetail ) {
+            content = <SpotifyResultDetailTrack track={this.state.trackDetail} showAlbumDetail={this.selectAlbum.bind(this)} showArtistDetail={this.selectArtist.bind(this)} />;
+        } else if( this.state.albumDetail ) {
+            content = <SpotifyResultDetailAlbum album={this.state.albumDetail} showTrackDetail={this.selectTrack.bind(this)} showAlbumDetail={this.selectAlbum.bind(this)} showArtistDetail={this.selectArtist.bind(this)} />;
+        } else if( this.state.artistDetail ) {
+            content = <SpotifyResultDetailArtist artist={this.state.artistDetail} showAlbumDetail={this.selectAlbum.bind(this)} />;
+        } else {
+            return <></>;
+        }
+        return <SpotifyResultDetail onClose={this.closeDetail.bind(this)} query={this.state.query}>{content}</SpotifyResultDetail>
     }
 
     /**
      * Remove current detail pane.
      **/
     closeDetail() {
-        this.setState( { detail: undefined } );
+        this.setState( { 
+            trackDetail: undefined,
+            albumDetail: undefined,
+            artistDetail: undefined 
+        } );
     }
 }

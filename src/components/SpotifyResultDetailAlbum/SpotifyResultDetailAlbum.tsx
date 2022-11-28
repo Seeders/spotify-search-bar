@@ -2,8 +2,6 @@ import * as React from "react";
 import getClassName from "../../utils/GetClassName";
 import { AppData } from "../../App";
 import { SpotifyItems, SpotifyAlbum, SpotifyArtist, mapTracks, SpotifyTrack, mapArtist } from "../../models/SpotifyModels";
-import SpotifyResultDetailTrack from "../SpotifyResultDetailTrack/SpotifyResultDetailTrack";
-import SpotifyResultDetailArtist from "../SpotifyResultDetailArtist/SpotifyResultDetailArtist";
 import { getArtist, getTracks } from "../../api/SpotifyAPI";
 import { formatDuration } from "../../utils/Time";
 
@@ -13,7 +11,9 @@ interface SpotifyResultDetailAlbumProps {
   className?: string;
   children?: React.ReactNode;
   album: AppData<SpotifyAlbum>; //album data to display details for
-  showDetail: Function; //call this with one of the detail panes to show the pane.
+  showTrackDetail: Function; //call this with one of the detail panes to show the pane.
+  showAlbumDetail: Function; //call this with one of the detail panes to show the pane.
+  showArtistDetail: Function; //call this with one of the detail panes to show the pane.
 }
 
 interface SpotifyResultDetailAlbumState {
@@ -95,20 +95,15 @@ export default class SpotifyResultDetailAlbum extends React.Component<SpotifyRes
      * When a user clicks an artist, call this.props.showDetail with a new Artist detail pane.
      * We first need to look up the artist data using the artist id from track meta.  
      **/
-    clickedArtist(event: React.UIEvent) {
-        let id = this.props.album.meta.artists[0].id;
-        getArtist( id ).then( (artist:SpotifyArtist) => {                           
-            var detail = <SpotifyResultDetailArtist artist={mapArtist(artist)} showDetail={this.props.showDetail} />;
-            this.props.showDetail( detail );
-        });
+    clickedArtist() {        
+        this.props.showArtistDetail( this.props.album.meta.artists[0] );
     }
 
     /**
      * When a user clicks an album, call this.props.showDetail with a new Album detail pane.  
      **/
     clickAlbum( album: AppData<SpotifyAlbum> ) {
-        var detail = <SpotifyResultDetailAlbum album={album} showDetail={this.props.showDetail} />;
-        this.props.showDetail( detail );
+        this.props.showAlbumDetail( album );
     }
 
     /**
@@ -119,9 +114,7 @@ export default class SpotifyResultDetailAlbum extends React.Component<SpotifyRes
         if( this.state.tracks && this.state.tracks.length > index ) {
             let track = this.state.tracks[index];
             if( track ) {
-                track.meta.album = this.props.album.meta;
-                var detail = <SpotifyResultDetailTrack track={track} showDetail={this.props.showDetail} />;
-                this.props.showDetail( detail );
+                this.props.showTrackDetail( track );
             }
         }
     }

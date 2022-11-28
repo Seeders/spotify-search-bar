@@ -2,7 +2,6 @@ import * as React from "react";
 import getClassName from "../../utils/GetClassName";
 import { AppData } from "../../App";
 import { SpotifyItems, SpotifyAlbum, SpotifyArtist, mapAlbums } from "../../models/SpotifyModels";
-import SpotifyResultDetailAlbum from "../SpotifyResultDetailAlbum/SpotifyResultDetailAlbum";
 import { getAlbums } from "../../api/SpotifyAPI";
 import SpotifySearchResult from "../SpotifySearchResult/SpotifySearchResult";
 
@@ -12,7 +11,7 @@ interface SpotifyResultDetailArtistProps {
   className?: string;
   children?: React.ReactNode;
   artist: AppData<SpotifyArtist>; //artist data to display details for
-  showDetail: Function; //call this with one of the detail panes to show the pane.
+  showAlbumDetail: Function; //call this with one of the detail panes to show the pane.
 }
 
 interface SpotifyResultDetailArtistState {
@@ -108,7 +107,6 @@ export default class SpotifyResultDetailArtist extends React.Component<SpotifyRe
      * When a user clicks an album, call this.props.showDetail with a new Album detail pane.  
      **/
     clickAlbum( album: AppData<SpotifyAlbum> ) {
-        var detail = <SpotifyResultDetailAlbum album={album} showDetail={this.props.showDetail} />;
-        this.props.showDetail( detail );
+        this.props.showAlbumDetail( album );
     }
 }
