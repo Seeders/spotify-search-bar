@@ -40,8 +40,8 @@ export default class SpotifyResultDetailTrack extends React.Component<SpotifyRes
         return (
             <div className={getClassName(this.mainClass, this.props.className)}>
                 <div className="spotify_result-detail--breadcrumb">
-                    <a tabIndex={0} onClick={this.clickedArtist.bind(this)}>{this.props.track.meta.artists[0].name}</a> - <span className="spotify_text-parenthesis">(Artist)</span><br /> 
-                    &emsp; <a tabIndex={0} onClick={this.clickedAlbum.bind(this)}>{this.props.track.meta.album.name}</a> - <span className="spotify_text-parenthesis">(Album)</span><br /> 
+                    <a tabIndex={0} onClick={() => this.props.showArtistDetail( this.props.track.meta.artists[0] )}>{this.props.track.meta.artists[0].name}</a> - <span className="spotify_text-parenthesis">(Artist)</span><br /> 
+                    &emsp; <a tabIndex={0} onClick={() => this.props.showAlbumDetail( this.props.track.meta.album )}>{this.props.track.meta.album.name}</a> - <span className="spotify_text-parenthesis">(Album)</span><br /> 
                     &emsp;&emsp;&gt; <span>{this.props.track.name}</span> - <span className="spotify_text-parenthesis">(Track #{this.props.track.meta.track_number})</span>
                 </div>
                 <div className={getClassName(`${this.mainClass}--content`)} >         
@@ -52,8 +52,8 @@ export default class SpotifyResultDetailTrack extends React.Component<SpotifyRes
                 </div>  
                 <div>
                     <div>
-                        <h3 onClick={this.clickedAlbum.bind(this)}>{this.props.track.meta.album.name}</h3>
-                        <img className={getClassName('result-detail--image')} src={this.props.track.meta.album.images[0].url} onClick={this.clickedAlbum.bind(this)} /> 
+                        <h3 onClick={() => this.props.showAlbumDetail( this.props.track.meta.album )}>{this.props.track.meta.album.name}</h3>
+                        <img className={getClassName('result-detail--image')} src={this.props.track.meta.album.images[0].url} onClick={() => this.props.showAlbumDetail( this.props.track.meta.album )} /> 
                     </div>
                     <div>
                         <h3>Album Released</h3>
@@ -64,20 +64,5 @@ export default class SpotifyResultDetailTrack extends React.Component<SpotifyRes
         );    
 
     }
-
-    /**
-     * When a user clicks an artist, call this.props.showDetail with a new Artist detail pane.  
-     **/
-    clickedArtist() {                              
-        this.props.showArtistDetail( this.props.track.meta.artists[0] );
-    }
-
-    /**
-     * When a user clicks an album, call this.props.showDetail with a new Album detail pane.  
-     **/
-    clickedAlbum() {               
-        this.props.showAlbumDetail( this.props.track.meta.album );
-    }
- 
 
 }

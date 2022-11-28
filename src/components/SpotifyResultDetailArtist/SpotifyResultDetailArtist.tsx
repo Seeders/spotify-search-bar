@@ -1,7 +1,7 @@
 import * as React from "react";
 import getClassName from "../../utils/GetClassName";
 import { AppData } from "../../App";
-import { SpotifyItems, SpotifyAlbum, SpotifyArtist, mapAlbums } from "../../models/SpotifyModels";
+import { SpotifyItems, SpotifyItem, SpotifyAlbum, SpotifyArtist, mapAlbums } from "../../models/SpotifyModels";
 import { getAlbums } from "../../api/SpotifyAPI";
 import SpotifySearchResult from "../SpotifySearchResult/SpotifySearchResult";
 
@@ -66,14 +66,14 @@ export default class SpotifyResultDetailArtist extends React.Component<SpotifyRe
                         <img className="spotify_result-detail--image" src={this.props.artist.image} />                     
                     </div>
                     <div>
-                        <h2>Albums <a onClick={this.toggleSort.bind(this)}>{sortDirection}</a></h2> 
+                        <h2>Albums <a onClick={this.toggleSort}>{sortDirection}</a></h2> 
                         <div className={getClassName(`${this.mainClass}--content`)} >                       
                             <div className="spotify_result--flex-container">
                                 {this.state.albums.map( ( result: AppData<SpotifyAlbum>, index: number ) => {                 
-                                    return (<SpotifySearchResult key={index} item={result} onClick={this.clickAlbum.bind(this)} />);
+                                    return (<SpotifySearchResult key={index} item={result} onClick={() => this.props.showAlbumDetail( result.meta )} />);
                                 })}  
                             </div>         
-                        </div>                       
+                        </div>                     
                     </div>
                 </div>
             );
@@ -114,10 +114,4 @@ export default class SpotifyResultDetailArtist extends React.Component<SpotifyRe
         });
     }
 
-    /**
-     * When a user clicks an album, call this.props.showDetail with a new Album detail pane.  
-     **/
-    clickAlbum( album: AppData<SpotifyAlbum> ) {
-        this.props.showAlbumDetail( album );
-    }
 }

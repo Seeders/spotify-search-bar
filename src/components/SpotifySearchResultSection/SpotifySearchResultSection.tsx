@@ -65,13 +65,13 @@ export default class SpotifySearchResultSection extends React.Component<SpotifyS
         return (
             <div className={getClassName(this.mainClass, this.props.className)}>
                 <div>
-                    <button disabled={this.state.currentPage == 0} onClick={this.previousPage.bind(this)} className={getClassName(`${this.mainClass}--previous`)}>&lt;</button>  
+                    <button disabled={this.state.currentPage == 0} onClick={() => this.previousPage} className={getClassName(`${this.mainClass}--previous`)}>&lt;</button>  
                 </div>
                 <div>        
                    {content}
                 </div>      
                 <div>
-                    <button onClick={this.nextPage.bind(this)} className={getClassName(`${this.mainClass}--next`)}>&gt;</button>     
+                    <button onClick={() => this.nextPage} className={getClassName(`${this.mainClass}--next`)}>&gt;</button>     
                 </div>
             </div>
         );

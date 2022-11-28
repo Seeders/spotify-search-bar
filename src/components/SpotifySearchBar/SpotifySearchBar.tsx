@@ -20,7 +20,7 @@ export default class SpotifySearchBar extends React.Component<SpotifySearchBarPr
 
         return (
             <div className={getClassName(this.mainClass, this.props.className)}>
-                <input value={query ? query : ""} type="text" autoFocus className={getClassName(`${this.mainClass}_text-input`)} placeholder="What do you want to listen to?" onFocus={this.handleChange.bind(this)} onChange={this.handleChange.bind(this)} />            
+                <input value={query ? query : ""} type="text" autoFocus className={getClassName(`${this.mainClass}_text-input`)} placeholder="What do you want to listen to?" onFocus={(event) => this.handleChange(event)} onChange={(event) => this.handleChange(event)} />            
             </div>
         );
     }

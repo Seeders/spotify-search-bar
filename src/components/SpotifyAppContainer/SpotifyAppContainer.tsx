@@ -51,7 +51,7 @@ export default class SpotifyAppContainer extends React.Component<SpotifyAppConta
         return (
             <div className={getClassName(this.mainClass, this.props.className)}>
                 <div className="spotify_search-container-search-bar-container">
-                    <SpotifySearchBar submitCallback={this.submitQuery.bind(this)} />    
+                    <SpotifySearchBar submitCallback={(_query:string) => this.submitQuery(_query)} />    
                 </div>
                 <div className="spotify_search-container-detail-container">
                     {this.renderDetail()}
@@ -71,7 +71,7 @@ export default class SpotifyAppContainer extends React.Component<SpotifyAppConta
                 query: this.state.query,
                 mapFunction: mapResultArtistItems,
                 results: mapResultArtistItems(this.state.results),
-                onClick: this.selectArtist.bind(this)
+                onClick: (item:SpotifyItem) => this.selectArtist(item)
             },
             {
                 name: 'Albums',
@@ -79,7 +79,7 @@ export default class SpotifyAppContainer extends React.Component<SpotifyAppConta
                 query: this.state.query,
                 mapFunction: mapResultAlbumItems,
                 results: mapResultAlbumItems(this.state.results),
-                onClick: this.selectAlbum.bind(this)
+                onClick: (item:SpotifyItem) => this.selectAlbum(item)
             },
             {
                 name: 'Tracks',
@@ -87,7 +87,7 @@ export default class SpotifyAppContainer extends React.Component<SpotifyAppConta
                 query: this.state.query,
                 mapFunction: mapResultTrackItems,
                 results: mapResultTrackItems(this.state.results),
-                onClick: this.selectTrack.bind(this)
+                onClick: (item:SpotifyItem) => this.selectTrack(item)
             }];
         } else {
             return [];
@@ -98,7 +98,7 @@ export default class SpotifyAppContainer extends React.Component<SpotifyAppConta
     /**
      * handler for when a user clicks on an artist.
      */
-     selectArtist( result: SpotifyItem ) {   
+    selectArtist( result: SpotifyItem ) {   
         getArtist( result.id ? result.id : "").then ( (res:SpotifyArtist) => {
             this.setState( { artistDetail: mapArtist( res ), albumDetail: undefined, trackDetail: undefined } ); 
         });
@@ -155,15 +155,15 @@ export default class SpotifyAppContainer extends React.Component<SpotifyAppConta
     renderDetail(): JSX.Element {
         let content: JSX.Element;
         if( this.state.trackDetail ) {
-            content = <SpotifyResultDetailTrack track={this.state.trackDetail} showAlbumDetail={this.selectAlbum.bind(this)} showArtistDetail={this.selectArtist.bind(this)} />;
+            content = <SpotifyResultDetailTrack track={this.state.trackDetail} showAlbumDetail={(item: SpotifyItem) => this.selectAlbum(item)} showArtistDetail={(item: SpotifyItem) => this.selectArtist(item)} />;
         } else if( this.state.albumDetail ) {
-            content = <SpotifyResultDetailAlbum album={this.state.albumDetail} showTrackDetail={this.selectTrack.bind(this)} showAlbumDetail={this.selectAlbum.bind(this)} showArtistDetail={this.selectArtist.bind(this)} />;
+            content = <SpotifyResultDetailAlbum album={this.state.albumDetail} showTrackDetail={(item: SpotifyItem) => this.selectTrack(item)} showArtistDetail={(item: SpotifyItem) => this.selectArtist(item)} />;
         } else if( this.state.artistDetail ) {
-            content = <SpotifyResultDetailArtist artist={this.state.artistDetail} showAlbumDetail={this.selectAlbum.bind(this)} />;
+            content = <SpotifyResultDetailArtist artist={this.state.artistDetail} showAlbumDetail={(item: SpotifyItem) => this.selectAlbum(item)} />;
         } else {
             return <></>;
         }
-        return <SpotifyResultDetail onClose={this.closeDetail.bind(this)} query={this.state.query}>{content}</SpotifyResultDetail>
+        return <SpotifyResultDetail onClose={this.closeDetail} query={this.state.query}>{content}</SpotifyResultDetail>
     }
 
     /**

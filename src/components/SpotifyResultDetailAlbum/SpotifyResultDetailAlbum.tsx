@@ -12,7 +12,6 @@ interface SpotifyResultDetailAlbumProps {
   children?: React.ReactNode;
   album: AppData<SpotifyAlbum>; //album data to display details for
   showTrackDetail: Function; //call this with one of the detail panes to show the pane.
-  showAlbumDetail: Function; //call this with one of the detail panes to show the pane.
   showArtistDetail: Function; //call this with one of the detail panes to show the pane.
 }
 
@@ -52,7 +51,7 @@ export default class SpotifyResultDetailAlbum extends React.Component<SpotifyRes
             return (
                 <div className={getClassName(this.mainClass, this.props.className)}>
                     <div className="spotify_result-detail--breadcrumb">
-                        <a tabIndex={0} onClick={this.clickedArtist.bind(this)}>{this.props.album.meta.artists[0].name}</a> - <span className="spotify_text-parenthesis">(Artist)</span><br />
+                        <a tabIndex={0} onClick={() => this.props.showArtistDetail( this.props.album.meta.artists[0] )}>{this.props.album.meta.artists[0].name}</a> - <span className="spotify_text-parenthesis">(Artist)</span><br />
                         &emsp;&gt; <span>{this.props.album.name}</span> - <span className="spotify_text-parenthesis">(Album)</span>
                     </div>
                     <div>
@@ -73,7 +72,7 @@ export default class SpotifyResultDetailAlbum extends React.Component<SpotifyRes
                                     return (
                                         <div key={index}>
                                             {trackNumber}.&nbsp;
-                                            <a tabIndex={0} onClick={this.clickedTrack.bind(this)} data-index={index}>
+                                            <a tabIndex={0} onClick={() => this.clickedTrack(index)}>
                                                 {track.name}
                                             </a> 
                                             &nbsp;<span className="spotify_text-parenthesis">({formatDuration(track.meta.duration_ms)})</span>
@@ -102,29 +101,13 @@ export default class SpotifyResultDetailAlbum extends React.Component<SpotifyRes
     }
 
     /**
-     * When a user clicks an artist, call this.props.showDetail with a new Artist detail pane.
-     * We first need to look up the artist data using the artist id from track meta.  
-     **/
-    clickedArtist() {        
-        this.props.showArtistDetail( this.props.album.meta.artists[0] );
-    }
-
-    /**
-     * When a user clicks an album, call this.props.showDetail with a new Album detail pane.  
-     **/
-    clickAlbum( album: AppData<SpotifyAlbum> ) {
-        this.props.showAlbumDetail( album );
-    }
-
-    /**
      * When a user clicks an track, call this.props.showDetail with a new Track detail pane.  
      **/
-    clickedTrack( event: React.UIEvent) {
-        let index = parseInt(event.currentTarget.getAttribute( 'data-index' ) as string);
+    clickedTrack( index: number) {
         if( this.state.tracks && this.state.tracks.length > index ) {
             let track = this.state.tracks[index];
             if( track ) {
-                this.props.showTrackDetail( track );
+                this.props.showTrackDetail( track.meta );
             }
         }
     }
