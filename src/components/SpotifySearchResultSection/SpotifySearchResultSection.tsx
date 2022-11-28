@@ -97,19 +97,10 @@ export default class SpotifySearchResultSection extends React.Component<SpotifyS
      * Pagination - query for the a particular page of results
      **/
     submitQuery( pageNum: number ) {
-        query( this.props.query, this.props.type, pageNum ).then( (res:SpotifyAlbumsArtistsTracks) => {
-            this.loadedResults( pageNum, res );
+        query( this.props.query, this.props.type, pageNum ).then( (res: null|SpotifyAlbumsArtistsTracks) => {
+            if( res ) {
+                this.setState( { currentPage: pageNum, results: this.props.mapFunction(res) } );
+            }
         });
-    }
-
-    /**
-     * Pagination - result handler
-     **/
-    loadedResults( pageNum: number, results: SpotifyAlbumsArtistsTracks ) {
-        if( results != null ) {   
-            this.setState( { currentPage: pageNum, results: this.props.mapFunction(results) } );
-        } else {
-            this.setState( { currentPage: pageNum, results: undefined } );
-        }
     }
 }

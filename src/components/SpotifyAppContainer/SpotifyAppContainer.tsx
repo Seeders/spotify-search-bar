@@ -99,24 +99,30 @@ export default class SpotifyAppContainer extends React.Component<SpotifyAppConta
      * handler for when a user clicks on an artist.
      */
     selectArtist( result: SpotifyItem ) {   
-        getArtist( result.id ? result.id : "").then ( (res:SpotifyArtist) => {
-            this.setState( { artistDetail: mapArtist( res ), albumDetail: undefined, trackDetail: undefined } ); 
+        getArtist( result.id ? result.id : "").then ( (res:SpotifyArtist|null) => {
+            if( res ) {
+                this.setState( { artistDetail: mapArtist( res ), albumDetail: undefined, trackDetail: undefined } ); 
+            }
         });
     }
     /**
      * handler for when a user clicks on an album.
      */
     selectAlbum( result: SpotifyItem ) {
-        getAlbum( result.id ? result.id : "" ).then( (res:SpotifyAlbum) => {     
-            this.setState( { albumDetail: mapAlbum(res), artistDetail: undefined, trackDetail: undefined } ); 
+        getAlbum( result.id ? result.id : "" ).then( (res:SpotifyAlbum|null) => {     
+            if( res ) {
+                this.setState( { albumDetail: mapAlbum(res), artistDetail: undefined, trackDetail: undefined } ); 
+            }
         });
     }
     /**
      * handler for when a user clicks on a track.
      */
     selectTrack( result: SpotifyItem ) {
-        getTrack( result.id ).then( (res:SpotifyTrack) => {           
-            this.setState( { trackDetail: mapTrack(res), albumDetail: undefined, artistDetail: undefined } );
+        getTrack( result.id ).then( (res:SpotifyTrack|null) => {           
+            if( res ) {
+                this.setState( { trackDetail: mapTrack(res), albumDetail: undefined, artistDetail: undefined } );
+            }
         });
     }
 
@@ -128,8 +134,10 @@ export default class SpotifyAppContainer extends React.Component<SpotifyAppConta
         this.closeDetail();
         localStorage.setItem( 'spotify_last-query', _query );
         if( _query.length > 0 ) {
-            query( _query, "track,artist,album" ).then( (res:SpotifyAlbumsArtistsTracks) => {
-                this.loadedResults( _query, res );
+            query( _query, "track,artist,album" ).then( (res:null|SpotifyAlbumsArtistsTracks) => {
+                if( res ) {
+                    this.loadedResults( _query, res );
+                }
             }).catch((error:string) => {
                 console.warn( error );
             });

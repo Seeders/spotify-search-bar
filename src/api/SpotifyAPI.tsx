@@ -11,9 +11,12 @@ const CLIENT_ID = 'c125d728642049e6ac238098f7560681';
  * @param query query string params to include
  **/
 function getEndpoint( path:string, query?:string ) : string {
-    return query ? `${API_URL}${path}?${query}` : `${API_URL}${path}`; 
+    return `${API_URL}${path}?${query}&requestCount=${++requestCount}`; 
 }
 
+var requestCount = 0;
+
+var lastReceived = 0;
 /**
  * Make an API request to the given url.  Will automatically include required token in request.
  **/
@@ -40,7 +43,17 @@ function doAPIRequest(url:string) : Promise<any> {
                     'Content-Type': 'application/json',
                     'Authorization': 'Bearer ' + token
                 }
-            }).then( ( response ) => {
+            }).then( ( response: Response ) => {
+                //keep track of request count and compare to response.  throw away old responses by returning null.
+                let requestCountObj = response.url.split('&requestCount=');
+                if( requestCountObj && requestCountObj.length > 1 ) {
+                    let responseId = parseInt(requestCountObj[1]);
+                    if( responseId < lastReceived ) {
+                        return null;
+                    } else {
+                        lastReceived = responseId;
+                    }
+                }
                 if( response.ok ) {
                     return response.json();
                 } else if( response.status == 429 ) {
@@ -51,8 +64,8 @@ function doAPIRequest(url:string) : Promise<any> {
                     localStorage.removeItem(ACCESS_TOKEN_KEY);
                     getAccessToken();   
                 }
-            } ).then( response => {                      
-                return response;
+            } ).then( data => {                      
+                return data;
             });      
     }
     return Promise.reject();
@@ -64,67 +77,67 @@ function doAPIRequest(url:string) : Promise<any> {
  * @param type comma delimited string containing artist, album, or track 
  * @param pageNum what page of results to retrieve
  **/
-export function query( query:string, type: string, pageNum: number = 0 ) : Promise<SpotifyAlbumsArtistsTracks> {  
+export function query( query:string, type: string, pageNum: number = 0 ) : Promise<null|SpotifyAlbumsArtistsTracks> {  
     if( query.length == 0 ) {
         return Promise.reject();   
     }
     let limit = 10;    
-    return doAPIRequest( getEndpoint('search', `q=${query}&type=${type}&limit=${limit}&offset=${pageNum * limit}`) );
+    return doAPIRequest( getEndpoint('search', `q=${query}&type=${type}&limit=${limit}&offset=${pageNum * limit}`) ) as Promise<null|SpotifyAlbumsArtistsTracks>;
 }
 
 /**
  * Get artist from Spotify using id 
  * @param artist_id spotify id for artist to retrieve
  **/
-export function getArtist( artist_id:string ) : Promise<SpotifyArtist> { 
+export function getArtist( artist_id:string ) : Promise<null|SpotifyArtist> { 
     if( !artist_id ) {
         return Promise.reject();   
     }     
-    return doAPIRequest( getEndpoint(`artists/${artist_id}`) );
+    return doAPIRequest( getEndpoint(`artists/${artist_id}`) ) as Promise<null|SpotifyArtist>;
 }     
 
 /**
  * Get album from Spotify using id 
  * @param album_id spotify id for album to retrieve
  **/
-export function getAlbum( album_id:string ) : Promise<SpotifyAlbum> {    
+export function getAlbum( album_id:string ) : Promise<null|SpotifyAlbum> {    
     if( !album_id ) {
         return Promise.reject();   
     }    
-    return doAPIRequest( getEndpoint(`albums/${album_id}`)  );
+    return doAPIRequest( getEndpoint(`albums/${album_id}`)  ) as Promise<null|SpotifyAlbum>;
 }
 
 /**
  * Get all albums of an artist from Spotify using the artist_id
  * @param artist_id spotify id for artist to retrieve albums for
  **/
-export function getAlbums( artist_id:string ) : Promise<SpotifyItems<SpotifyAlbum>> {    
+export function getAlbums( artist_id:string ) : Promise<null|SpotifyItems<SpotifyAlbum>> {    
     if( !artist_id ) {
         return Promise.reject();   
     }    
-    return doAPIRequest( getEndpoint(`artists/${artist_id}/albums`, `limit=50`)  );
+    return doAPIRequest( getEndpoint(`artists/${artist_id}/albums`, `limit=50`)  ) as Promise<null|SpotifyItems<SpotifyAlbum>>;
 }
  
 /**
  * Get all tracks of an album from Spotify using the album_id
  * @param album_id spotify id for album to retrieve tracks for
  **/
-export function getTracks( album_id:string ) : Promise<SpotifyItems<SpotifyTrack>> {    
+export function getTracks( album_id:string ) : Promise<null|SpotifyItems<SpotifyTrack>> {    
     if( !album_id ) {
         return Promise.reject();   
     }     
-    return doAPIRequest( getEndpoint(`albums/${album_id}/tracks`, `limit=50`) );      
+    return doAPIRequest( getEndpoint(`albums/${album_id}/tracks`, `limit=50`) ) as Promise<null|SpotifyItems<SpotifyTrack>>;      
 }
 
 /**
  * Get track from Spotify using id 
  * @param track_id spotify id for track to retrieve
  **/
-export function getTrack( track_id:string ) : Promise<SpotifyTrack> {    
+export function getTrack( track_id:string ) : Promise<null|SpotifyTrack> {    
     if( !track_id ) {
         return Promise.reject();   
     }    
-    return doAPIRequest( getEndpoint(`tracks/${track_id}`) );
+    return doAPIRequest( getEndpoint(`tracks/${track_id}`) ) as Promise<null|SpotifyTrack>;
 }
 
 //random string utility function

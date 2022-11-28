@@ -42,7 +42,9 @@ export default class SpotifyResultDetailAlbum extends React.Component<SpotifyRes
     }
 
     componentDidUpdate(prevProps: Readonly<SpotifyResultDetailAlbumProps>, prevState: Readonly<SpotifyResultDetailAlbumState>, snapshot?: any): void {
-        this.loadData();        
+        if( this.props.album.id != prevProps.album.id ) {
+            this.loadData();        
+        }
     }
   
     render() {
@@ -95,8 +97,10 @@ export default class SpotifyResultDetailAlbum extends React.Component<SpotifyRes
      * load tracks belonging to this album.
      **/
     loadData() {
-        getTracks( this.props.album.id ).then( ( res: SpotifyItems<SpotifyTrack> ) => {       
-            this.setState( { tracks: mapTracks(res.items, this.props.album), album: this.props.album } );
+        getTracks( this.props.album.id ).then( ( res: null|SpotifyItems<SpotifyTrack> ) => {       
+            if( res != null ) {
+                this.setState( { tracks: mapTracks(res.items, this.props.album), album: this.props.album } );
+            }
         });
     }
 

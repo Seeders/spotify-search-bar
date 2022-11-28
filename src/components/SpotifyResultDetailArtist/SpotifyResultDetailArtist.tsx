@@ -86,9 +86,11 @@ export default class SpotifyResultDetailArtist extends React.Component<SpotifyRe
      * Given an artist, load their albums from the api, then sort by release date.
      **/
     loadAlbums() {
-        getAlbums( this.props.artist.id ).then( ( res: SpotifyItems<SpotifyAlbum> ) => {                 
-            let albums = this.sortAlbums(mapAlbums(res.items), this.state.sortDirection);    
-            this.setState( { albums: albums, artist: this.props.artist } );
+        getAlbums( this.props.artist.id ).then( ( res: null|SpotifyItems<SpotifyAlbum> ) => {      
+            if( res ) {           
+                let albums = this.sortAlbums(mapAlbums(res.items), this.state.sortDirection);    
+                this.setState( { albums: albums, artist: this.props.artist } );
+            }
         });
     }
 
