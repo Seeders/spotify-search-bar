@@ -38,8 +38,12 @@ export default class SpotifyResultDetailAlbum extends React.Component<SpotifyRes
     
     }
 
-    componentDidMount() {
+    componentDidMount () {
         this.loadData();
+    }
+
+    componentDidUpdate(prevProps: Readonly<SpotifyResultDetailAlbumProps>, prevState: Readonly<SpotifyResultDetailAlbumState>, snapshot?: any): void {
+        this.loadData();        
     }
   
     render() {
@@ -84,7 +88,7 @@ export default class SpotifyResultDetailAlbum extends React.Component<SpotifyRes
         } else {      
             return (
                 <div className={getClassName(this.mainClass, this.props.className)}>Loading</div>
-            );
+                );
         }
     }
 

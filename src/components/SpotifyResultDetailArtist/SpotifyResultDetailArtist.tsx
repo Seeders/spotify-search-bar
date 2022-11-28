@@ -41,6 +41,14 @@ export default class SpotifyResultDetailArtist extends React.Component<SpotifyRe
         this.loadAlbums();
     }
 
+    componentDidUpdate(prevProps: Readonly<SpotifyResultDetailArtistProps>, prevState: Readonly<SpotifyResultDetailArtistState>, snapshot?: any): void {
+        if( this.props.artist.id != prevProps.artist.id ) {
+            this.loadAlbums();
+        }
+    }
+
+
+    
     render() {
         if( this.state.artist == this.props.artist && this.state.albums ) {
             let sortDirection = '^';
