@@ -132,7 +132,6 @@ export default class SpotifyAppContainer extends React.Component<SpotifyAppConta
      **/
     submitQuery( _query: string ) {
         this.closeDetail();
-        localStorage.setItem( 'spotify_last-query', _query );
         if( _query.length > 0 ) {
             query( _query, "track,artist,album" ).then( (res:null|SpotifyAlbumsArtistsTracks) => {
                 if( res ) {

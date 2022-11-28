@@ -1,5 +1,6 @@
 import * as React from "react";
 import getClassName from "../../utils/GetClassName";
+import handleChangeIntent from "../../utils/ChangeIntent";
 require("./SpotifySearchBar.css");
 
 interface SpotifySearchBarProps {
@@ -13,14 +14,12 @@ interface SpotifySearchBarState {
 
 export default class SpotifySearchBar extends React.Component<SpotifySearchBarProps, SpotifySearchBarState> {
     mainClass : string = "search-bar";
-    changeIntentDelay:number = 100;
+    lastSubmit : string = "";
 
-    render() {
-        let query = localStorage.getItem( 'spotify_last-query' );
-
+    render() {    
         return (
             <div className={getClassName(this.mainClass, this.props.className)}>
-                <input value={query ? query : ""} type="text" autoFocus className={getClassName(`${this.mainClass}_text-input`)} placeholder="What do you want to listen to?" onFocus={(event) => this.handleChange(event)} onChange={(event) => this.handleChange(event)} />            
+                <input type="text" autoFocus className={getClassName(`${this.mainClass}_text-input`)} placeholder="What do you want to listen to?" onChange={(event) => this.handleChange(event)} />                        
             </div>
         );
     }
@@ -28,8 +27,13 @@ export default class SpotifySearchBar extends React.Component<SpotifySearchBarPr
     /**
      * handle user input in search box.
      **/
-    handleChange( event: React.ChangeEvent<HTMLInputElement>) {   
-       
-        this.props.submitCallback( event.target.value );
+     handleChange( event: React.ChangeEvent<HTMLInputElement>){   
+        localStorage.setItem( 'spotify_last-query', event.target.value );  
+        handleChangeIntent( () => {     
+            let query = localStorage.getItem( 'spotify_last-query' );           
+            this.props.submitCallback( query );
+        }, 100 );
     }
+
+
 }
