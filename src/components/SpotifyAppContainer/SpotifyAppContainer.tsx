@@ -170,7 +170,7 @@ export default class SpotifyAppContainer extends React.Component<SpotifyAppConta
         } else {
             return <></>;
         }
-        return <SpotifyResultDetail onClose={this.closeDetail} query={this.state.query}>{content}</SpotifyResultDetail>
+        return <SpotifyResultDetail onClose={() => this.closeDetail()} query={this.state.query}>{content}</SpotifyResultDetail>
     }
 
     /**
